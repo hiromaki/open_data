@@ -13,6 +13,7 @@ class CsvdataController < ApplicationController
     @csv_obj.each do |row|
       open_data = OpenDatum.find_by(shisetsu_id: row[19])
 
+      # ファイルがなかった場合
       if open_data.nil?
         open_data = OpenDatum.new
 
