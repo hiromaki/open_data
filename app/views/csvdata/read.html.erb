@@ -6,11 +6,28 @@
     </thead>
 
     <tbody>
-      <% @csv_obj.each do |row| %>
+      <% @csv_obj.each do |csv| %>
         <tr>
-          <td><%= row[0] %></td>
-          <td><%= row[1] %></td>
-          <td><%= row[2] %></td>
+          <td><%= csv.x %></td>
+          <td><%= csv.y %></td>
+          <td><%= csv.shisetsu_name %></td>
+          <td><%= csv.shisetsu_name_kana %></td>
+          <td><%= csv.shisetsu_name_all %></td>
+          <td><%= csv.syozaichi %></td>
+          <td><%= csv.chiku_name %></td>
+          <td><%= csv.tel %></td>
+          <td><%= csv.fax %></td>
+          <td><%= csv.syosai_info %></td>
+          <td><%= csv.kaikan_jikan %></td>
+          <td><%= csv.url %></td>
+          <td><%= csv.barrier_free_info %></td>
+          <td><%= csv.tyurinjyo_pc %></td>
+          <td><%= csv.tyurinjyo_kei %></td>
+          <td><%= csv.dai_bunrui %></td>
+          <td><%= csv.syo_bunrui %></td>
+          <td><%= csv.category %></td>
+          <td><%= csv.icon_no %></td>
+          <td><%= csv.shisetsu_id %></td>
         </tr>
       <% end %>
     </tbody>
