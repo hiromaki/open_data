@@ -61,6 +61,20 @@
       </div>
     </div>
     <div class="col-md-9 content-area">
+
+      <div style='width: 800px;'>
+        <div id="map" style='width: 800px; height: 500px;'></div>
+      </div>
+
+      <script type="text/javascript">
+          handler = Gmaps.build('Google');
+          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+            markers = handler.addMarkers(<%=raw @hash.to_json %>);
+            handler.bounds.extendWith(markers);
+            handler.fitMapToBounds();
+          });
+      </script>
+
       <%= page_entries_info @csv_obj %>
       <table class="table table-striped table-bordered table-hover table-condensed">
         <thead>

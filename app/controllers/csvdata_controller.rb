@@ -17,6 +17,13 @@ class CsvdataController < ApplicationController
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
+    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
+      marker.lat csv.y
+      marker.lng csv.x
+      marker.infowindow csv.shisetsu_name
+      marker.json({title: csv.shisetsu_name})
+    end
+
   end
 
   def insert
