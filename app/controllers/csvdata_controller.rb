@@ -59,24 +59,32 @@ class CsvdataController < ApplicationController
     # 防災関連施設ポイントデータ（災害時避難所・一時避難場所）
     urls.push(url_base + "mapnavoskdat_hinanbasyo.csv")
     # 防災関連施設ポイントデータ（災害時用へリポート）
-    urls.push(url_base + "mapnavoskdat_heliport.csv")
-    # 防災関連施設ポイントデータ（防火水槽など）
-    urls.push(url_base + "mapnavoskdat_boukasuisou.csv")
-    # 防災関連施設ポイントデータ（防災スピーカー）
-    urls.push(url_base + "mapnavoskdat_bousaisp.csv")
-    # 防災関連施設ポイントデータ（津波避難ビル）
-    urls.push(url_base + "mapnavoskdat_hinanbiru.csv")
+    # urls.push(url_base + "mapnavoskdat_heliport.csv")
+    # # 防災関連施設ポイントデータ（防火水槽など）
+    # urls.push(url_base + "mapnavoskdat_boukasuisou.csv")
+    # # 防災関連施設ポイントデータ（防災スピーカー）
+    # urls.push(url_base + "mapnavoskdat_bousaisp.csv")
+    # # 防災関連施設ポイントデータ（津波避難ビル）
+    # urls.push(url_base + "mapnavoskdat_hinanbiru.csv")
 
     for url in urls do
 
+        if RUBY_PLATFORM.downcase =~ /mswin(?!ce)|mingw|cygwin|bccwin/
+            tmp_file = 'tmp\file_name'
+        else
+            tmp_file = "/tmp/file_name"
+        end
+
         # csv = open(url, "rb:CP932:UTF-8").read.encode("utf-8", :invalid => :replace, :undef => :replace)
         csv = open(url, "r:binary").read.encode("CP932", "UTF-8", invalid: :replace, undef: :replace)
-        File.open('/tmp/file_name', 'w') { |file| file.write(csv) }
+        File.open(tmp_file, 'wb') { |file| file.write(csv) }
 
-        @csv_obj = CSV.read('/tmp/file_name', encoding: "CP932:UTF-8", headers: :first_row)
+        # @csv_obj = CSV.read('/tmp/file_name', encoding: "CP932:UTF-8", headers: :first_row)
+        @csv_obj = CSV.read(tmp_file, encoding: "CP932:UTF-8", headers: :first_row)
 
         @csv_obj.each do |row|
-          open_data = OpenDatum.find_by(shisetsu_id: row[19])
+
+          open_data = OpenDatum.find_by(shisetsu_id: row[8])
 
           # ファイルがなかった場合
           if open_data.nil?
