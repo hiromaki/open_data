@@ -1,67 +1,76 @@
 
-
 <div class="container">
   <div class="row">
     <div class="col-md-3 sidebar">
+<%= form_tag(controller: :csvdata, action: :read) do %>
       <div class="panel panel-default">
         <div class="panel-heading">カテゴリー</div>
           <ul class="list-group">
-            <button type="button" class="list-group-item" href="#">その他</button>
-            <button type="button" class="list-group-item" href="#">     － その他施設</button>
-            <button type="button" class="list-group-item" href="#">     － 無線LANスポット</button>
-            <button type="button" class="list-group-item" href="#">医療・福祉<i class="fa fa-medkit"></i></button>
-            <button type="button" class="list-group-item" href="#">     － 介護老人保健施設</button>
-            <button type="button" class="list-group-item" href="#">     － 特別養護老人ホーム</button>
-            <button type="button" class="list-group-item" href="#">     － 病院・診療所</button>
-            <button type="button" class="list-group-item" href="#">     － 福祉施設</button>
-            <button type="button" class="list-group-item" href="#">駅・バス停<i class="fa fa-subway"></i></button>
-            <button type="button" class="list-group-item" href="#">     － バス停</button>
-            <button type="button" class="list-group-item" href="#">     － 駅</button>
-            <button type="button" class="list-group-item" href="#">会館・ホール</button>
-            <button type="button" class="list-group-item" href="#">     － 会館・ホール</button>
-            <button type="button" class="list-group-item" href="#">     － 地域集会所・老人憩いの家</button>
-            <button type="button" class="list-group-item" href="#">学校・保育所</button>
-            <button type="button" class="list-group-item" href="#">     － 学校(その他)</button>
-            <button type="button" class="list-group-item" href="#">     － 高等学校</button>
-            <button type="button" class="list-group-item" href="#">     － 小学校</button>
-            <button type="button" class="list-group-item" href="#">     － 大学</button>
-            <button type="button" class="list-group-item" href="#">     － 中学校</button>
-            <button type="button" class="list-group-item" href="#">     － 保育所</button>
-            <button type="button" class="list-group-item" href="#">     － 幼稚園</button>
-            <button type="button" class="list-group-item" href="#">官公庁<i class="fa fa-building"></i></button>
-            <button type="button" class="list-group-item" href="#">     － 国の機関</button>
-            <button type="button" class="list-group-item" href="#">     － 市の機関</button>
-            <button type="button" class="list-group-item" href="#">     － 府の機関</button>
-            <button type="button" class="list-group-item" href="#">環境・リサイクル</button>
-            <button type="button" class="list-group-item" href="#">     － 古紙回収協力店</button>
-            <button type="button" class="list-group-item" href="#">警察・消防<i class="fa fa-ambulance"></i></button>
-            <button type="button" class="list-group-item" href="#">     － 警察・交番</button>
-            <button type="button" class="list-group-item" href="#">     － 消防署</button>
-            <button type="button" class="list-group-item" href="#">公園・スポーツ</button>
-            <button type="button" class="list-group-item" href="#">     － スポーツ施設</button>
-            <button type="button" class="list-group-item" href="#">     － 公園</button>
-            <button type="button" class="list-group-item" href="#">     － 児童遊園・広場</button>
-            <button type="button" class="list-group-item" href="#">公衆トイレ</button>
-            <button type="button" class="list-group-item" href="#">     － 公衆便所</button>
-            <button type="button" class="list-group-item" href="#">     － 車いす対応公衆便所</button>
-            <button type="button" class="list-group-item" href="#">駐車場・駐輪場</button>
-            <button type="button" class="list-group-item" href="#">     － バイク駐車場</button>
-            <button type="button" class="list-group-item" href="#">     － 駅周辺駐輪場</button>
-            <button type="button" class="list-group-item" href="#">     － 駅周辺駐輪場（その他）</button>
-            <button type="button" class="list-group-item" href="#">     － 自転車保管所</button>
-            <button type="button" class="list-group-item" href="#">文化・観光</button>
-            <button type="button" class="list-group-item" href="#">     － その他施設</button>
-            <button type="button" class="list-group-item" href="#">     － 図書館</button>
-            <button type="button" class="list-group-item" href="#">     － 都市景観資源</button>
-            <button type="button" class="list-group-item" href="#">     － 美術館・博物館</button>
-            <button type="button" class="list-group-item" href="#">名所・旧跡</button>
-            <button type="button" class="list-group-item" href="#">     － 社寺</button>
-            <button type="button" class="list-group-item" href="#">     － 名所・旧跡</button>
-          </ul>
+            <%= submit_tag "その他" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － その他施設" , class: "list-group-item"%>
+            <%= submit_tag "     － 無線LANスポット" , class: "list-group-item"%> -->
+            <%= submit_tag "医療・福祉" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 介護老人保健施設" , class: "list-group-item"%>
+            <%= submit_tag "     － 特別養護老人ホーム" , class: "list-group-item"%>
+            <%= submit_tag "     － 病院・診療所" , class: "list-group-item"%>
+            <%= submit_tag "     － 福祉施設" , class: "list-group-item"%>
+ -->            <%= submit_tag "駅・バス停" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － バス停" , class: "list-group-item"%>
+            <%= submit_tag "     － 駅" , class: "list-group-item"%>
+ -->            <%= submit_tag "会館・ホール" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 会館・ホール" , class: "list-group-item"%>
+            <%= submit_tag "     － 地域集会所・老人憩いの家" , class: "list-group-item"%>
+ -->            <%= submit_tag "学校・保育所" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 学校(その他)" , class: "list-group-item"%>
+            <%= submit_tag "     － 高等学校" , class: "list-group-item"%>
+            <%= submit_tag "     － 小学校" , class: "list-group-item"%>
+            <%= submit_tag "     － 大学" , class: "list-group-item"%>
+            <%= submit_tag "     － 中学校" , class: "list-group-item"%>
+            <%= submit_tag "     － 保育所" , class: "list-group-item"%>
+            <%= submit_tag "     － 幼稚園" , class: "list-group-item"%>
+ -->            <%= submit_tag "官公庁" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 国の機関" , class: "list-group-item"%>
+            <%= submit_tag "     － 市の機関" , class: "list-group-item"%>
+            <%= submit_tag "     － 府の機関" , class: "list-group-item"%>
+ -->            <%= submit_tag "環境・リサイクル" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 古紙回収協力店" , class: "list-group-item"%>
+ -->            <%= submit_tag "警察・消防" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 警察・交番" , class: "list-group-item"%>
+            <%= submit_tag "     － 消防署" , class: "list-group-item"%>
+ -->            <%= submit_tag "公園・スポーツ" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － スポーツ施設" , class: "list-group-item"%>
+            <%= submit_tag "     － 公園" , class: "list-group-item"%>
+            <%= submit_tag "     － 児童遊園・広場" , class: "list-group-item"%>
+ -->            <%= submit_tag "公衆トイレ" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 公衆便所" , class: "list-group-item"%>
+            <%= submit_tag "     － 車いす対応公衆便所" , class: "list-group-item"%>
+ -->            <%= submit_tag "駐車場・駐輪場" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － バイク駐車場" , class: "list-group-item"%>
+            <%= submit_tag "     － 駅周辺駐輪場" , class: "list-group-item"%>
+            <%= submit_tag "     － 駅周辺駐輪場（その他）" , class: "list-group-item"%>
+            <%= submit_tag "     － 自転車保管所" , class: "list-group-item"%>
+ -->            <%= submit_tag "文化・観光" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － その他施設" , class: "list-group-item"%>
+            <%= submit_tag "     － 図書館" , class: "list-group-item"%>
+            <%= submit_tag "     － 都市景観資源" , class: "list-group-item"%>
+            <%= submit_tag "     － 美術館・博物館" , class: "list-group-item"%>
+ -->            <%= submit_tag "名所・旧跡" , class: "list-group-item"%>
+<!--             <%= submit_tag "     － 社寺" , class: "list-group-item"%>
+            <%= submit_tag "     － 名所・旧跡" , class: "list-group-item"%>
+ -->          </ul>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">地区</div>
+          <ul class="list-group">
+            <%= submit_tag "検索" , class: "list-group-item"%>
+            <%= submit_tag "その他" , class: "list-group-item"%>
+         </ul>
+      </div>
+
+<% end %>
     </div>
     <div class="col-md-9 content-area">
-
       <div style='width: 800px;'>
         <div id="map" style='width: 800px; height: 500px;'></div>
       </div>
