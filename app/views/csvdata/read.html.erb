@@ -1,34 +1,116 @@
-  <table>
-    <thead>
-      <tr>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <% @csv_obj.each do |csv| %>
-        <tr>
-          <td><%= csv.x %></td>
-          <td><%= csv.y %></td>
-          <td><%= csv.shisetsu_name %></td>
-          <td><%= csv.shisetsu_name_kana %></td>
-          <td><%= csv.shisetsu_name_all %></td>
-          <td><%= csv.syozaichi %></td>
-          <td><%= csv.chiku_name %></td>
-          <td><%= csv.tel %></td>
-          <td><%= csv.fax %></td>
-          <td><%= csv.syosai_info %></td>
-          <td><%= csv.kaikan_jikan %></td>
-          <td><%= csv.url %></td>
-          <td><%= csv.barrier_free_info %></td>
-          <td><%= csv.tyurinjyo_pc %></td>
-          <td><%= csv.tyurinjyo_kei %></td>
-          <td><%= csv.dai_bunrui %></td>
-          <td><%= csv.syo_bunrui %></td>
-          <td><%= csv.category %></td>
-          <td><%= csv.icon_no %></td>
-          <td><%= csv.shisetsu_id %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 sidebar">
+      <div class="panel panel-default">
+        <div class="panel-heading">カテゴリー</div>
+          <ul class="list-group">
+            <button type="button" class="list-group-item" href="#">その他</button>
+            <button type="button" class="list-group-item" href="#">     － その他施設</button>
+            <button type="button" class="list-group-item" href="#">     － 無線LANスポット</button>
+            <button type="button" class="list-group-item" href="#">医療・福祉<i class="fa fa-medkit"></i></button>
+            <button type="button" class="list-group-item" href="#">     － 介護老人保健施設</button>
+            <button type="button" class="list-group-item" href="#">     － 特別養護老人ホーム</button>
+            <button type="button" class="list-group-item" href="#">     － 病院・診療所</button>
+            <button type="button" class="list-group-item" href="#">     － 福祉施設</button>
+            <button type="button" class="list-group-item" href="#">駅・バス停<i class="fa fa-subway"></i></button>
+            <button type="button" class="list-group-item" href="#">     － バス停</button>
+            <button type="button" class="list-group-item" href="#">     － 駅</button>
+            <button type="button" class="list-group-item" href="#">会館・ホール</button>
+            <button type="button" class="list-group-item" href="#">     － 会館・ホール</button>
+            <button type="button" class="list-group-item" href="#">     － 地域集会所・老人憩いの家</button>
+            <button type="button" class="list-group-item" href="#">学校・保育所</button>
+            <button type="button" class="list-group-item" href="#">     － 学校(その他)</button>
+            <button type="button" class="list-group-item" href="#">     － 高等学校</button>
+            <button type="button" class="list-group-item" href="#">     － 小学校</button>
+            <button type="button" class="list-group-item" href="#">     － 大学</button>
+            <button type="button" class="list-group-item" href="#">     － 中学校</button>
+            <button type="button" class="list-group-item" href="#">     － 保育所</button>
+            <button type="button" class="list-group-item" href="#">     － 幼稚園</button>
+            <button type="button" class="list-group-item" href="#">官公庁<i class="fa fa-building"></i></button>
+            <button type="button" class="list-group-item" href="#">     － 国の機関</button>
+            <button type="button" class="list-group-item" href="#">     － 市の機関</button>
+            <button type="button" class="list-group-item" href="#">     － 府の機関</button>
+            <button type="button" class="list-group-item" href="#">環境・リサイクル</button>
+            <button type="button" class="list-group-item" href="#">     － 古紙回収協力店</button>
+            <button type="button" class="list-group-item" href="#">警察・消防<i class="fa fa-ambulance"></i></button>
+            <button type="button" class="list-group-item" href="#">     － 警察・交番</button>
+            <button type="button" class="list-group-item" href="#">     － 消防署</button>
+            <button type="button" class="list-group-item" href="#">公園・スポーツ</button>
+            <button type="button" class="list-group-item" href="#">     － スポーツ施設</button>
+            <button type="button" class="list-group-item" href="#">     － 公園</button>
+            <button type="button" class="list-group-item" href="#">     － 児童遊園・広場</button>
+            <button type="button" class="list-group-item" href="#">公衆トイレ</button>
+            <button type="button" class="list-group-item" href="#">     － 公衆便所</button>
+            <button type="button" class="list-group-item" href="#">     － 車いす対応公衆便所</button>
+            <button type="button" class="list-group-item" href="#">駐車場・駐輪場</button>
+            <button type="button" class="list-group-item" href="#">     － バイク駐車場</button>
+            <button type="button" class="list-group-item" href="#">     － 駅周辺駐輪場</button>
+            <button type="button" class="list-group-item" href="#">     － 駅周辺駐輪場（その他）</button>
+            <button type="button" class="list-group-item" href="#">     － 自転車保管所</button>
+            <button type="button" class="list-group-item" href="#">文化・観光</button>
+            <button type="button" class="list-group-item" href="#">     － その他施設</button>
+            <button type="button" class="list-group-item" href="#">     － 図書館</button>
+            <button type="button" class="list-group-item" href="#">     － 都市景観資源</button>
+            <button type="button" class="list-group-item" href="#">     － 美術館・博物館</button>
+            <button type="button" class="list-group-item" href="#">名所・旧跡</button>
+            <button type="button" class="list-group-item" href="#">     － 社寺</button>
+            <button type="button" class="list-group-item" href="#">     － 名所・旧跡</button>
+          </ul>
+      </div>
+    </div>
+    <div class="col-md-9 content-area">
+      <%= page_entries_info @csv_obj %>
+      <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>施設名</th>
+            <th>所在地</th>
+            <th>地区名</th>
+            <th>TEL</th>
+            <th>FAX</th>
+            <th>詳細情報</th>
+            <th>URL</th>
+            <th>カテゴリー</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if @csv_obj.present? %>
+          <% @csv_obj.each do |csv| %>
+            <tr>
+    <!--
+              <td><%= csv.x %></td>
+              <td><%= csv.y %></td>
+    -->
+              <td><%= csv.shisetsu_name %></td>
+    <!--
+              <td><%= csv.shisetsu_name_kana %></td>
+              <td><%= csv.shisetsu_name_all %></td>
+    -->
+              <td><%= csv.syozaichi %></td>
+              <td><%= csv.chiku_name %></td>
+              <td><%= csv.tel %></td>
+              <td><%= csv.fax %></td>
+              <td><%= csv.syosai_info %><%= csv.kaikan_jikan %><%= csv.barrier_free_info %><%= csv.tyurinjyo_pc %><%= csv.tyurinjyo_kei %></td>
+              <td><%= csv.url %></td>
+    <!--
+              <td><%= csv.dai_bunrui %></td>
+              <td><%= csv.syo_bunrui %></td>
+    -->
+              <td><%= csv.category %></td>
+    <!--
+              <td><%= csv.icon_no %></td>
+              <td><%= csv.shisetsu_id %></td>
+    -->
+            </tr>
+          <% end %>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @csv_obj %>
+    </div>
+  </div>
+</div>
+

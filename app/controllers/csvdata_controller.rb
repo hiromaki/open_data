@@ -5,8 +5,17 @@ class CsvdataController < ApplicationController
 
   def read
 
+    input_category = "公衆トイレ/公衆便所"
+
+    @csv_obj = Kaminari.paginate_array(OpenDatum.where(category: input_category)).page(params[:page]).per(10)
+
     # @csv_obj = OpenDatum.find_by(category: "公衆トイレ/公衆便所")
-    @csv_obj = OpenDatum.all
+    # @csv_obj = OpenDatum.all
+
+    if @csv_obj.blank?
+      logger.debug("結果なし")
+      flash.now[:alert] = "検索結果が存在しませんでした。"
+    end
 
   end
 
