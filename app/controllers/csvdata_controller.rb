@@ -1,16 +1,23 @@
-require 'csv'
-require 'open-uri'
-
 class CsvdataController < ApplicationController
 
   def read
 
-    input_category = "公衆トイレ/公衆便所"
+    input_category = "その他"
 
-    @csv_obj = Kaminari.paginate_array(OpenDatum.where(category: input_category)).page(params[:page]).per(10)
+    buttons = setButtons
 
-    # @csv_obj = OpenDatum.find_by(category: "公衆トイレ/公衆便所")
-    # @csv_obj = OpenDatum.all
+    for button in buttons do
+
+        if button
+            input_category = button
+        end
+
+    end
+
+    @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+
+    # @csv_obj = OpenDatum.find_by(category: "") 一件
+    # @csv_obj = OpenDatum.all 全件
 
     if @csv_obj.blank?
       logger.debug("結果なし")
@@ -26,104 +33,62 @@ class CsvdataController < ApplicationController
 
   end
 
-  def insert
+private
 
-    # # 施設情報ポイントデータ（全体）
-    # url = "http://www.city.osaka.lg.jp/contents/wdu090/opendata/mapnavoskdat_csv/mapnavoskdat_shisetsuall.csv"
+  def setButtons
 
-    # csv = open(url)
-    # @csv_obj = CSV.read(csv, encoding: "CP932:UTF-8", headers: :first_row)
-
-    # @csv_obj.each do |row|
-    #   open_data = OpenDatum.find_by(shisetsu_id: row[19])
-
-    #   # ファイルがなかった場合
-    #   if open_data.nil?
-    #     open_data = OpenDatum.new
-
-    #     open_data.x = row[0]
-    #     open_data.y = row[1]
-    #     open_data.shisetsu_name = row[2]
-    #     open_data.shisetsu_name_kana = row[3]
-    #     open_data.shisetsu_name_all = row[4]
-    #     open_data.syozaichi = row[5]
-    #     open_data.chiku_name = row[6]
-    #     open_data.tel = row[7]
-    #     open_data.fax = row[8]
-    #     open_data.syosai_info = row[9]
-    #     open_data.kaikan_jikan = row[10]
-    #     open_data.url = row[11]
-    #     open_data.barrier_free_info = row[12]
-    #     open_data.tyurinjyo_pc = row[13]
-    #     open_data.tyurinjyo_kei = row[14]
-    #     open_data.dai_bunrui = row[15]
-    #     open_data.syo_bunrui = row[16]
-    #     open_data.category = row[17]
-    #     open_data.icon_no = row[18]
-    #     open_data.shisetsu_id = row[19]
-    #     open_data.latlng = row[0] + row[1]
-
-    #     open_data.save
-
-    #   end
-
-    # end
-
-    url_base = "http://www.city.osaka.lg.jp/contents/wdu090/opendata/mapnavoskdat_csv/"
-
-    urls = Array.new
-    # 防災関連施設ポイントデータ（災害時避難所・一時避難場所）
-    urls.push(url_base + "mapnavoskdat_hinanbasyo.csv")
-    # 防災関連施設ポイントデータ（災害時用へリポート）
-    # urls.push(url_base + "mapnavoskdat_heliport.csv")
-    # # 防災関連施設ポイントデータ（防火水槽など）
-    # urls.push(url_base + "mapnavoskdat_boukasuisou.csv")
-    # # 防災関連施設ポイントデータ（防災スピーカー）
-    # urls.push(url_base + "mapnavoskdat_bousaisp.csv")
-    # # 防災関連施設ポイントデータ（津波避難ビル）
-    # urls.push(url_base + "mapnavoskdat_hinanbiru.csv")
-
-    for url in urls do
-
-        if RUBY_PLATFORM.downcase =~ /mswin(?!ce)|mingw|cygwin|bccwin/
-            tmp_file = 'tmp\file_name'
-        else
-            tmp_file = "/tmp/file_name"
-        end
-
-        # csv = open(url, "rb:CP932:UTF-8").read.encode("utf-8", :invalid => :replace, :undef => :replace)
-        csv = open(url, "r:binary").read.encode("CP932", "UTF-8", invalid: :replace, undef: :replace)
-        File.open(tmp_file, 'wb') { |file| file.write(csv) }
-
-        # @csv_obj = CSV.read('/tmp/file_name', encoding: "CP932:UTF-8", headers: :first_row)
-        @csv_obj = CSV.read(tmp_file, encoding: "CP932:UTF-8", headers: :first_row)
-
-        @csv_obj.each do |row|
-
-          open_data = OpenDatum.find_by(shisetsu_id: row[8])
-
-          # ファイルがなかった場合
-          if open_data.nil?
-            open_data = OpenDatum.new
-
-            open_data.x = row[0]
-            open_data.y = row[1]
-            open_data.shisetsu_name = row[2]
-            open_data.syozaichi = row[3]
-            open_data.chiku_name = row[4]
-            open_data.tel = row[5]
-            open_data.syo_bunrui = row[6]
-            open_data.category = row[7]
-            open_data.shisetsu_id = row[8]
-            open_data.latlng = row[0] + row[1]
-
-            open_data.save
-
-          end
-
-        end
-
-    end
+    buttons = Array.new
+    buttons.push(params[:sonota_button])
+    buttons.push(params[:sonota_shisetsu_button])
+    buttons.push(params[:musen_lan_spot_button])
+    buttons.push(params[:iryo_fukushi_button])
+    buttons.push(params[:kaigo_rojin_hoken_button])
+    buttons.push(params[:tokubetsu_yougo_rojin_button])
+    buttons.push(params[:byoin_shinryojyo_button])
+    buttons.push(params[:fukushi_shisetsu_button])
+    buttons.push(params[:eki_bustei_button])
+    buttons.push(params[:bustei_button])
+    buttons.push(params[:eki_button])
+    buttons.push(params[:kaikan_hole_button])
+    buttons.push(params[:kaikan_hole_button])
+    buttons.push(params[:chiiki_syukaisyo_rojin_ikoino_ie_button])
+    buttons.push(params[:gakko_hoikusyo_button])
+    buttons.push(params[:gakko_sonota_button])
+    buttons.push(params[:kouto_gakko_button])
+    buttons.push(params[:syo_gakko_button])
+    buttons.push(params[:daigaku_button])
+    buttons.push(params[:chugakko_button])
+    buttons.push(params[:hoikusyo_button])
+    buttons.push(params[:yochien_button])
+    buttons.push(params[:kankoucho_button])
+    buttons.push(params[:kunino_kikan_button])
+    buttons.push(params[:shi_kikan_button])
+    buttons.push(params[:fu_kikan_button])
+    buttons.push(params[:kankyo_recycle_button])
+    buttons.push(params[:furukami_kaisyu_kyoryokuten_button])
+    buttons.push(params[:keisatsu_syobo_button])
+    buttons.push(params[:keisatus_koban_button])
+    buttons.push(params[:syobosyo_button])
+    buttons.push(params[:koen_sports_button])
+    buttons.push(params[:sports_shisetsu_button])
+    buttons.push(params[:koen_button])
+    buttons.push(params[:jido_koen_hiroba_button])
+    buttons.push(params[:kosyu_toilet_button])
+    buttons.push(params[:kosyu_benjyo_button])
+    buttons.push(params[:kurumaisu_taio_kosyu_benjyo_button])
+    buttons.push(params[:tyusyajyo_tyurinjyo_button])
+    buttons.push(params[:bike_tyusyajyo_button])
+    buttons.push(params[:ekisyuhen_tyurinjyo_button])
+    buttons.push(params[:ekisyuhen_tyurinjyo_sonota_button])
+    buttons.push(params[:jitensya_hokanjyo_button])
+    buttons.push(params[:bunka_kanko_button])
+    buttons.push(params[:bunka_kanko_sonota_button])
+    buttons.push(params[:tosyokan_button])
+    buttons.push(params[:toshi_keikan_shigen_button])
+    buttons.push(params[:bijyutsukan_hakubutsukan_button])
+    buttons.push(params[:meisyo_kyuseki_button])
+    buttons.push(params[:syaji_button])
+    buttons.push(params[:meisyo_kyuseki_syosai_button])
 
   end
 
