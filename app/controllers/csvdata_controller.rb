@@ -4,12 +4,13 @@ class CsvdataController < ApplicationController
 
     input_category = "その他"
 
-    buttons = setButtons
+    buttons = set_buttons
 
-    for button in buttons do
+    buttons.each do |key, value|
 
-        if button
-            input_category = button
+        if key
+            input_category = value
+            break
         end
 
     end
@@ -33,62 +34,62 @@ class CsvdataController < ApplicationController
 
   end
 
-private
+  def set_buttons
 
-  def setButtons
+    buttons = Hash.new
+    buttons.store(params[:sonota_button],  "その他")
+    buttons.store(params[:sonota_shisetsu_button],  "その他/その他施設")
+    buttons.store(params[:musen_lan_spot_button],  "その他/無線LANスポット")
+    buttons.store(params[:iryo_fukushi_button],  "医療・福祉")
+    buttons.store(params[:kaigo_rojin_hoken_button],  "医療・福祉/介護老人保健施設")
+    buttons.store(params[:tokubetsu_yougo_rojin_button],  "医療・福祉/特別養護老人ホーム")
+    buttons.store(params[:byoin_shinryojyo_button],  "医療・福祉/病院・診療所")
+    buttons.store(params[:fukushi_shisetsu_button],  "医療・福祉/福祉施設")
+    buttons.store(params[:eki_bustei_button],  "駅・バス停")
+    buttons.store(params[:bustei_button],  "駅・バス停/バス停")
+    buttons.store(params[:eki_button],  "駅・バス停/駅")
+    buttons.store(params[:kaikan_hole_button],  "会館・ホール")
+    buttons.store(params[:kaikan_hole_button],  "会館・ホール/会館・ホール")
+    buttons.store(params[:chiiki_syukaisyo_rojin_ikoino_ie_button],  "会館・ホール/地域集会所・老人憩いの家")
+    buttons.store(params[:gakko_hoikusyo_button],  "学校・保育所")
+    buttons.store(params[:gakko_sonota_button],  "学校・保育所/学校(その他)")
+    buttons.store(params[:kouto_gakko_button],  "学校・保育所/高等学校")
+    buttons.store(params[:syo_gakko_button],  "学校・保育所/小学校")
+    buttons.store(params[:daigaku_button],  "学校・保育所/大学")
+    buttons.store(params[:chugakko_button],  "学校・保育所/中学校")
+    buttons.store(params[:hoikusyo_button],  "学校・保育所/保育所")
+    buttons.store(params[:yochien_button],  "学校・保育所/幼稚園")
+    buttons.store(params[:kankoucho_button],  "官公庁")
+    buttons.store(params[:kunino_kikan_button],  "官公庁/国の機関")
+    buttons.store(params[:shi_kikan_button],  "官公庁/市の機関")
+    buttons.store(params[:fu_kikan_button],  "官公庁/府の機関")
+    buttons.store(params[:kankyo_recycle_button],  "環境・リサイクル")
+    buttons.store(params[:furukami_kaisyu_kyoryokuten_button],  "環境・リサイクル/古紙回収協力店")
+    buttons.store(params[:keisatsu_syobo_button],  "警察・消防")
+    buttons.store(params[:keisatus_koban_button],  "警察・消防/警察・交番")
+    buttons.store(params[:syobosyo_button],  "警察・消防/消防署")
+    buttons.store(params[:koen_sports_button],  "公園・スポーツ")
+    buttons.store(params[:sports_shisetsu_button],  "公園・スポーツ/スポーツ施設")
+    buttons.store(params[:koen_button],  "公園・スポーツ/公園")
+    buttons.store(params[:jido_koen_hiroba_button],  "公園・スポーツ/児童遊園・広場")
+    buttons.store(params[:kosyu_toilet_button],  "公衆トイレ")
+    buttons.store(params[:kosyu_benjyo_button],  "公衆トイレ/公衆便所")
+    buttons.store(params[:kurumaisu_taio_kosyu_benjyo_button],  "公衆トイレ/車いす対応公衆便所")
+    buttons.store(params[:tyusyajyo_tyurinjyo_button],  "駐車場・駐輪場")
+    buttons.store(params[:bike_tyusyajyo_button],  "駐車場・駐輪場/バイク駐車場")
+    buttons.store(params[:ekisyuhen_tyurinjyo_button],  "駐車場・駐輪場/駅周辺駐輪場")
+    buttons.store(params[:ekisyuhen_tyurinjyo_sonota_button],  "駐車場・駐輪場/駅周辺駐輪場（その他）")
+    buttons.store(params[:jitensya_hokanjyo_button],  "駐車場・駐輪場/自転車保管所")
+    buttons.store(params[:bunka_kanko_button],  "文化・観光")
+    buttons.store(params[:bunka_kanko_sonota_button],  "文化・観光/その他施設")
+    buttons.store(params[:tosyokan_button],  "文化・観光/図書館")
+    buttons.store(params[:toshi_keikan_shigen_button],  "文化・観光/都市景観資源")
+    buttons.store(params[:bijyutsukan_hakubutsukan_button],  "文化・観光/美術館・博物館")
+    buttons.store(params[:meisyo_kyuseki_button],  "名所・旧跡")
+    buttons.store(params[:syaji_button],  "名所・旧跡/社寺")
+    buttons.store(params[:meisyo_kyuseki_syosai_button],  "名所・旧跡/名所・旧跡")
 
-    buttons = Array.new
-    buttons.push(params[:sonota_button])
-    buttons.push(params[:sonota_shisetsu_button])
-    buttons.push(params[:musen_lan_spot_button])
-    buttons.push(params[:iryo_fukushi_button])
-    buttons.push(params[:kaigo_rojin_hoken_button])
-    buttons.push(params[:tokubetsu_yougo_rojin_button])
-    buttons.push(params[:byoin_shinryojyo_button])
-    buttons.push(params[:fukushi_shisetsu_button])
-    buttons.push(params[:eki_bustei_button])
-    buttons.push(params[:bustei_button])
-    buttons.push(params[:eki_button])
-    buttons.push(params[:kaikan_hole_button])
-    buttons.push(params[:kaikan_hole_button])
-    buttons.push(params[:chiiki_syukaisyo_rojin_ikoino_ie_button])
-    buttons.push(params[:gakko_hoikusyo_button])
-    buttons.push(params[:gakko_sonota_button])
-    buttons.push(params[:kouto_gakko_button])
-    buttons.push(params[:syo_gakko_button])
-    buttons.push(params[:daigaku_button])
-    buttons.push(params[:chugakko_button])
-    buttons.push(params[:hoikusyo_button])
-    buttons.push(params[:yochien_button])
-    buttons.push(params[:kankoucho_button])
-    buttons.push(params[:kunino_kikan_button])
-    buttons.push(params[:shi_kikan_button])
-    buttons.push(params[:fu_kikan_button])
-    buttons.push(params[:kankyo_recycle_button])
-    buttons.push(params[:furukami_kaisyu_kyoryokuten_button])
-    buttons.push(params[:keisatsu_syobo_button])
-    buttons.push(params[:keisatus_koban_button])
-    buttons.push(params[:syobosyo_button])
-    buttons.push(params[:koen_sports_button])
-    buttons.push(params[:sports_shisetsu_button])
-    buttons.push(params[:koen_button])
-    buttons.push(params[:jido_koen_hiroba_button])
-    buttons.push(params[:kosyu_toilet_button])
-    buttons.push(params[:kosyu_benjyo_button])
-    buttons.push(params[:kurumaisu_taio_kosyu_benjyo_button])
-    buttons.push(params[:tyusyajyo_tyurinjyo_button])
-    buttons.push(params[:bike_tyusyajyo_button])
-    buttons.push(params[:ekisyuhen_tyurinjyo_button])
-    buttons.push(params[:ekisyuhen_tyurinjyo_sonota_button])
-    buttons.push(params[:jitensya_hokanjyo_button])
-    buttons.push(params[:bunka_kanko_button])
-    buttons.push(params[:bunka_kanko_sonota_button])
-    buttons.push(params[:tosyokan_button])
-    buttons.push(params[:toshi_keikan_shigen_button])
-    buttons.push(params[:bijyutsukan_hakubutsukan_button])
-    buttons.push(params[:meisyo_kyuseki_button])
-    buttons.push(params[:syaji_button])
-    buttons.push(params[:meisyo_kyuseki_syosai_button])
+    return buttons
 
   end
 
