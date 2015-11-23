@@ -59,38 +59,16 @@
             <%= submit_tag "     － 名所・旧跡" , class: "list-group-item", name: "meisyo_kyuseki_syosai_button" %>
           </ul>
       </div>
-
       <div class="panel panel-default">
         <div class="panel-heading">地区</div>
           <ul class="list-group">
-<label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox1" value="option1"> 都島区
-</label>
 
-福島区
-此花区
-西区
-港区
-大正区
-天王寺区
-浪速区
-西淀川区
-東淀川区
-東成区
-生野区
-旭区
-城東区
-阿倍野区
-住吉区
-東住吉区
-西成区
-淀川区
-鶴見区
-住之江区
-平野区
-北区
-中央区
-その他
+<% for chiku in @chiku_list do %>
+            <label class="checkbox-inline">
+              <input type="checkbox" id="inlineCheckbox<%=chiku%>" value="<%=chiku%>"><%=chiku%>
+            </label>
+<% end %>
+
          </ul>
       </div>
 

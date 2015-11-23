@@ -32,6 +32,34 @@ class CsvdataController < ApplicationController
       marker.json({title: csv.shisetsu_name})
     end
 
+    @chiku_list = Array.new
+ 
+    @chiku_list.push("都島区")
+    @chiku_list.push("福島区")
+    @chiku_list.push("此花区")
+    @chiku_list.push("西区")
+    @chiku_list.push("港区")
+    @chiku_list.push("大正区")
+    @chiku_list.push("天王寺区")
+    @chiku_list.push("浪速区")
+    @chiku_list.push("西淀川区")
+    @chiku_list.push("東淀川区")
+    @chiku_list.push("東成区")
+    @chiku_list.push("生野区")
+    @chiku_list.push("旭区")
+    @chiku_list.push("城東区")
+    @chiku_list.push("阿倍野区")
+    @chiku_list.push("住吉区")
+    @chiku_list.push("東住吉区")
+    @chiku_list.push("西成区")
+    @chiku_list.push("淀川区")
+    @chiku_list.push("鶴見区")
+    @chiku_list.push("住之江区")
+    @chiku_list.push("平野区")
+    @chiku_list.push("北区")
+    @chiku_list.push("中央区")
+    @chiku_list.push("その他")
+ 
   end
 
   def set_buttons
