@@ -22,85 +22,46 @@ class CsvdataController < ApplicationController
         @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
     end
 
-
-    # @csv_obj = OpenDatum.find_by(category: "") 一件
-    # @csv_obj = OpenDatum.all 全件
-
     if @csv_obj.blank?
       logger.debug("結果なし")
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
-    # @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
-    #   marker.lat csv.y
-    #   marker.lng csv.x
-    #   marker.infowindow csv.shisetsu_name
-    #   marker.json({title: csv.shisetsu_name})
-    # end
+    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
+      marker.lat csv.y
+      marker.lng csv.x
+      marker.infowindow csv.shisetsu_name
+      marker.json({title: csv.shisetsu_name})
+    end
 
     @chiku_array = Array.new{ Array.new(2)}
 
+    chiku_work_array = ["都島区","福島区","此花区","西区","港区","大正区","天王寺区","浪速区","西淀川区","東淀川区","東成区",
+                        "生野区","旭区","城東区","阿倍野区","住吉区","東住吉区","西成区","淀川区","鶴見区","住之江区","平野区","北区","中央区","その他"]
 
     unless params[:check].nil?
 
-        logger.debug(params[:check][:chikus].index("都島区"))
-        logger.debug(params[:check][:chikus].index("福島区"))
-        logger.debug(params[:check][:chikus].index("此花区"))
-
-        @chiku_array.push(["都島区", true])
-        @chiku_array.push(["福島区", true])
-        @chiku_array.push(["此花区", true])
-        @chiku_array.push(["西区", true])
-        @chiku_array.push(["港区", true])
-        @chiku_array.push(["大正区", true])
-        @chiku_array.push(["天王寺区", true])
-        @chiku_array.push(["浪速区", true])
-        @chiku_array.push(["西淀川区", true])
-        @chiku_array.push(["東淀川区", true])
-        @chiku_array.push(["東成区", true])
-        @chiku_array.push(["生野区", true])
-        @chiku_array.push(["旭区", true])
-        @chiku_array.push(["城東区", true])
-        @chiku_array.push(["阿倍野区", true])
-        @chiku_array.push(["住吉区", true])
-        @chiku_array.push(["東住吉区", true])
-        @chiku_array.push(["西成区", true])
-        @chiku_array.push(["淀川区", true])
-        @chiku_array.push(["鶴見区", true])
-        @chiku_array.push(["住之江区", true])
-        @chiku_array.push(["平野区", true])
-        @chiku_array.push(["北区", true])
-        @chiku_array.push(["中央区", true])
-        @chiku_array.push(["その他", true])
+        chiku_work_array.each do |chiku|
+            @chiku_array.push([chiku, check_hantei(params[:check][:chikus], chiku)])
+        end
 
     else
 
-        @chiku_array.push(["都島区", true])
-        @chiku_array.push(["福島区", true])
-        @chiku_array.push(["此花区", true])
-        @chiku_array.push(["西区", true])
-        @chiku_array.push(["港区", true])
-        @chiku_array.push(["大正区", true])
-        @chiku_array.push(["天王寺区", true])
-        @chiku_array.push(["浪速区", true])
-        @chiku_array.push(["西淀川区", true])
-        @chiku_array.push(["東淀川区", true])
-        @chiku_array.push(["東成区", true])
-        @chiku_array.push(["生野区", true])
-        @chiku_array.push(["旭区", true])
-        @chiku_array.push(["城東区", true])
-        @chiku_array.push(["阿倍野区", true])
-        @chiku_array.push(["住吉区", true])
-        @chiku_array.push(["東住吉区", true])
-        @chiku_array.push(["西成区", true])
-        @chiku_array.push(["淀川区", true])
-        @chiku_array.push(["鶴見区", true])
-        @chiku_array.push(["住之江区", true])
-        @chiku_array.push(["平野区", true])
-        @chiku_array.push(["北区", true])
-        @chiku_array.push(["中央区", true])
-        @chiku_array.push(["その他", true])
+        chiku_work_array.each do |chiku|
+            @chiku_array.push([chiku, true])
+        end
 
+    end
+
+  end
+
+  def check_hantei(chiku_array, target_chiku)
+    result = chiku_array.index(target_chiku)
+
+    if result.nil?
+        return false
+    else
+        return true
     end
 
   end
