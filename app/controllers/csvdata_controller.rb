@@ -15,7 +15,13 @@ class CsvdataController < ApplicationController
 
     end
 
-    @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+    unless params[:check].nil?
+        logger.debug(params[:check][:chikus])
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+    else
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+    end
+
 
     # @csv_obj = OpenDatum.find_by(category: "") 一件
     # @csv_obj = OpenDatum.all 全件
@@ -25,41 +31,78 @@ class CsvdataController < ApplicationController
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
-    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
-      marker.lat csv.y
-      marker.lng csv.x
-      marker.infowindow csv.shisetsu_name
-      marker.json({title: csv.shisetsu_name})
+    # @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
+    #   marker.lat csv.y
+    #   marker.lng csv.x
+    #   marker.infowindow csv.shisetsu_name
+    #   marker.json({title: csv.shisetsu_name})
+    # end
+
+    @chiku_array = Array.new{ Array.new(2)}
+
+
+    unless params[:check].nil?
+
+        logger.debug(params[:check][:chikus].index("都島区"))
+        logger.debug(params[:check][:chikus].index("福島区"))
+        logger.debug(params[:check][:chikus].index("此花区"))
+
+        @chiku_array.push(["都島区", true])
+        @chiku_array.push(["福島区", true])
+        @chiku_array.push(["此花区", true])
+        @chiku_array.push(["西区", true])
+        @chiku_array.push(["港区", true])
+        @chiku_array.push(["大正区", true])
+        @chiku_array.push(["天王寺区", true])
+        @chiku_array.push(["浪速区", true])
+        @chiku_array.push(["西淀川区", true])
+        @chiku_array.push(["東淀川区", true])
+        @chiku_array.push(["東成区", true])
+        @chiku_array.push(["生野区", true])
+        @chiku_array.push(["旭区", true])
+        @chiku_array.push(["城東区", true])
+        @chiku_array.push(["阿倍野区", true])
+        @chiku_array.push(["住吉区", true])
+        @chiku_array.push(["東住吉区", true])
+        @chiku_array.push(["西成区", true])
+        @chiku_array.push(["淀川区", true])
+        @chiku_array.push(["鶴見区", true])
+        @chiku_array.push(["住之江区", true])
+        @chiku_array.push(["平野区", true])
+        @chiku_array.push(["北区", true])
+        @chiku_array.push(["中央区", true])
+        @chiku_array.push(["その他", true])
+
+    else
+
+        @chiku_array.push(["都島区", true])
+        @chiku_array.push(["福島区", true])
+        @chiku_array.push(["此花区", true])
+        @chiku_array.push(["西区", true])
+        @chiku_array.push(["港区", true])
+        @chiku_array.push(["大正区", true])
+        @chiku_array.push(["天王寺区", true])
+        @chiku_array.push(["浪速区", true])
+        @chiku_array.push(["西淀川区", true])
+        @chiku_array.push(["東淀川区", true])
+        @chiku_array.push(["東成区", true])
+        @chiku_array.push(["生野区", true])
+        @chiku_array.push(["旭区", true])
+        @chiku_array.push(["城東区", true])
+        @chiku_array.push(["阿倍野区", true])
+        @chiku_array.push(["住吉区", true])
+        @chiku_array.push(["東住吉区", true])
+        @chiku_array.push(["西成区", true])
+        @chiku_array.push(["淀川区", true])
+        @chiku_array.push(["鶴見区", true])
+        @chiku_array.push(["住之江区", true])
+        @chiku_array.push(["平野区", true])
+        @chiku_array.push(["北区", true])
+        @chiku_array.push(["中央区", true])
+        @chiku_array.push(["その他", true])
+
     end
 
-    @chiku_list = Array.new
- 
-    @chiku_list.push("都島区")
-    @chiku_list.push("福島区")
-    @chiku_list.push("此花区")
-    @chiku_list.push("西区")
-    @chiku_list.push("港区")
-    @chiku_list.push("大正区")
-    @chiku_list.push("天王寺区")
-    @chiku_list.push("浪速区")
-    @chiku_list.push("西淀川区")
-    @chiku_list.push("東淀川区")
-    @chiku_list.push("東成区")
-    @chiku_list.push("生野区")
-    @chiku_list.push("旭区")
-    @chiku_list.push("城東区")
-    @chiku_list.push("阿倍野区")
-    @chiku_list.push("住吉区")
-    @chiku_list.push("東住吉区")
-    @chiku_list.push("西成区")
-    @chiku_list.push("淀川区")
-    @chiku_list.push("鶴見区")
-    @chiku_list.push("住之江区")
-    @chiku_list.push("平野区")
-    @chiku_list.push("北区")
-    @chiku_list.push("中央区")
-    @chiku_list.push("その他")
- 
   end
 
   def set_buttons

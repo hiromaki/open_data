@@ -63,16 +63,20 @@
         <div class="panel-heading">地区</div>
           <ul class="list-group">
 
-<% for chiku in @chiku_list do %>
+          <%= hidden_field_tag 'check[chikus][]' %>
+          <% @chiku_array.each.with_index do |chiku, i| %>
             <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox<%=chiku%>" value="<%=chiku%>"><%=chiku%>
+              <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
+              <%= chiku[0] %>
+              <!-- <input type="checkbox" id="inlineCheckbox<%=chiku%>" value="<%=chiku%>"><%=chiku%> -->
             </label>
+          <% end %>
+
 <% end %>
 
          </ul>
       </div>
 
-<% end %>
     </div>
     <div class="col-md-9 content-area">
 
@@ -82,12 +86,12 @@
       </div>
 
       <script type="text/javascript">
-          handler = Gmaps.build('Google');
-          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-            markers = handler.addMarkers(<%=raw @hash.to_json %>);
-            handler.bounds.extendWith(markers);
-            handler.fitMapToBounds();
-          });
+          // handler = Gmaps.build('Google');
+          // handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+          //   markers = handler.addMarkers(<%=raw @hash.to_json %>);
+          //   handler.bounds.extendWith(markers);
+          //   handler.fitMapToBounds();
+          // });
       </script>
 
       <%= page_entries_info @csv_obj %>
