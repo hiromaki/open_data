@@ -1,8 +1,40 @@
 class CsvdataController < ApplicationController
 
+  def init
+
+    input_category = ""
+
+    @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+
+    if @csv_obj.blank?
+      logger.debug("結果なし")
+      flash.now[:alert] = "検索結果が存在しませんでした。"
+    end
+
+    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
+      marker.lat csv.y
+      marker.lng csv.x
+      marker.infowindow csv.shisetsu_name
+      marker.json({title: csv.shisetsu_name})
+    end
+
+    @chiku_array = Array.new{ Array.new(2)}
+
+    chiku_work_array = ["都島区","福島区","此花区","西区","港区","大正区","天王寺区","浪速区","西淀川区","東淀川区","東成区",
+                        "生野区","旭区","城東区","阿倍野区","住吉区","東住吉区","西成区","淀川区","鶴見区","住之江区","平野区","北区","中央区","その他"]
+
+
+    chiku_work_array.each do |chiku|
+        @chiku_array.push([chiku, true])
+    end
+
+    render "read"
+
+  end
+
   def read
 
-    input_category = "その他"
+    input_category = String.new
 
     buttons = set_buttons
 
@@ -15,11 +47,10 @@ class CsvdataController < ApplicationController
 
     end
 
-    unless params[:check].nil?
-        logger.debug(params[:check][:chikus])
-        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+    if input_category == "全部"
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
     else
-        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
     end
 
     if @csv_obj.blank?
@@ -39,18 +70,8 @@ class CsvdataController < ApplicationController
     chiku_work_array = ["都島区","福島区","此花区","西区","港区","大正区","天王寺区","浪速区","西淀川区","東淀川区","東成区",
                         "生野区","旭区","城東区","阿倍野区","住吉区","東住吉区","西成区","淀川区","鶴見区","住之江区","平野区","北区","中央区","その他"]
 
-    unless params[:check].nil?
-
-        chiku_work_array.each do |chiku|
-            @chiku_array.push([chiku, check_hantei(params[:check][:chikus], chiku)])
-        end
-
-    else
-
-        chiku_work_array.each do |chiku|
-            @chiku_array.push([chiku, true])
-        end
-
+    chiku_work_array.each do |chiku|
+        @chiku_array.push([chiku, check_hantei(params[:check][:chikus], chiku)])
     end
 
   end
@@ -69,6 +90,7 @@ class CsvdataController < ApplicationController
   def set_buttons
 
     buttons = Hash.new
+    buttons.store(params[:zenbu_button],  "全部")
     buttons.store(params[:sonota_button],  "その他")
     buttons.store(params[:sonota_shisetsu_button],  "その他/その他施設")
     buttons.store(params[:musen_lan_spot_button],  "その他/無線LANスポット")

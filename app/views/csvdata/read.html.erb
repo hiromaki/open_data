@@ -7,8 +7,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">検索条件</div>
           <ul class="list-group">
-
-
+            <%= text_field :shisetsu_name, :shisetsu_name, class: "form-control" %>
          </ul>
       </div>
 
@@ -33,6 +32,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">カテゴリー</div>
           <ul class="list-group">
+            <%= submit_tag "全部" , class: "list-group-item", name: "zenbu_button" %>
             <%= submit_tag "その他" , class: "list-group-item", name: "sonota_button" %>
             <%= submit_tag "     － その他施設" , class: "list-group-item", name: "sonota_shisetsu_button" %>
             <%= submit_tag "     － 無線LANスポット" , class: "list-group-item", name: "musen_lan_spot_button" %>

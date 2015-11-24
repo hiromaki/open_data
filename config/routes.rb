@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
   # root 'csvdata#insert'
-  root 'csvdata#read'
+  root 'csvdata#init'
   # Example of regular route:
   post '/' => 'csvdata#read'
 
