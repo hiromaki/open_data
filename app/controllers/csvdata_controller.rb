@@ -4,10 +4,9 @@ class CsvdataController < ApplicationController
 
     input_category = ""
 
-    @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'")).page(params[:page]).per(10)
+    @csv_obj = Kaminari.paginate_array(OpenDatum.all).page(params[:page]).per(10)
 
     if @csv_obj.blank?
-      logger.debug("結果なし")
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
@@ -20,13 +19,13 @@ class CsvdataController < ApplicationController
 
     @chiku_array = Array.new{ Array.new(2)}
 
-    chiku_work_array = ["都島区","福島区","此花区","西区","港区","大正区","天王寺区","浪速区","西淀川区","東淀川区","東成区",
-                        "生野区","旭区","城東区","阿倍野区","住吉区","東住吉区","西成区","淀川区","鶴見区","住之江区","平野区","北区","中央区","その他"]
+    chikus = Chiku.all
 
-
-    chiku_work_array.each do |chiku|
-        @chiku_array.push([chiku, true])
+    chikus.each do |chiku|
+        @chiku_array.push([chiku.name, true])
     end
+
+    @categories = Category.all
 
     render "read"
 
@@ -34,23 +33,22 @@ class CsvdataController < ApplicationController
 
   def read
 
+
     input_category = String.new
 
-    buttons = set_buttons
+    @categories = Category.all
 
-    buttons.each do |key, value|
-
-        if key
-            input_category = value
+    @categories.each do |category|
+        if category.param_name == params[:submit_button]
+            input_category = category.db_name
             break
         end
-
     end
 
     if input_category == "全部"
-        @csv_obj = Kaminari.paginate_array(OpenDatum.where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where("shisetsu_name like '%" + params[:shisetsu_name][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
     else
-        @csv_obj = Kaminari.paginate_array(OpenDatum.where("category like '%" + input_category + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+        @csv_obj = Kaminari.paginate_array(OpenDatum.where("shisetsu_name like '%" + params[:shisetsu_name][:shisetsu_name] + "%'").where("category like '%" + input_category + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
     end
 
     if @csv_obj.blank?
@@ -67,83 +65,21 @@ class CsvdataController < ApplicationController
 
     @chiku_array = Array.new{ Array.new(2)}
 
-    chiku_work_array = ["都島区","福島区","此花区","西区","港区","大正区","天王寺区","浪速区","西淀川区","東淀川区","東成区",
-                        "生野区","旭区","城東区","阿倍野区","住吉区","東住吉区","西成区","淀川区","鶴見区","住之江区","平野区","北区","中央区","その他"]
+    chikus = Chiku.all
 
-    chiku_work_array.each do |chiku|
-        @chiku_array.push([chiku, check_hantei(params[:check][:chikus], chiku)])
+    chikus.each do |chiku|
+        @chiku_array.push([chiku.name, check_hantei(params[:check][:chikus], chiku.name)])
     end
 
   end
 
   def check_hantei(chiku_array, target_chiku)
-    result = chiku_array.index(target_chiku)
 
-    if result.nil?
+    if chiku_array.index(target_chiku).nil?
         return false
     else
         return true
     end
-
-  end
-
-  def set_buttons
-
-    buttons = Hash.new
-    buttons.store(params[:zenbu_button],  "全部")
-    buttons.store(params[:sonota_button],  "その他")
-    buttons.store(params[:sonota_shisetsu_button],  "その他/その他施設")
-    buttons.store(params[:musen_lan_spot_button],  "その他/無線LANスポット")
-    buttons.store(params[:iryo_fukushi_button],  "医療・福祉")
-    buttons.store(params[:kaigo_rojin_hoken_button],  "医療・福祉/介護老人保健施設")
-    buttons.store(params[:tokubetsu_yougo_rojin_button],  "医療・福祉/特別養護老人ホーム")
-    buttons.store(params[:byoin_shinryojyo_button],  "医療・福祉/病院・診療所")
-    buttons.store(params[:fukushi_shisetsu_button],  "医療・福祉/福祉施設")
-    buttons.store(params[:eki_bustei_button],  "駅・バス停")
-    buttons.store(params[:bustei_button],  "駅・バス停/バス停")
-    buttons.store(params[:eki_button],  "駅・バス停/駅")
-    buttons.store(params[:kaikan_hole_button],  "会館・ホール")
-    buttons.store(params[:kaikan_hole_button],  "会館・ホール/会館・ホール")
-    buttons.store(params[:chiiki_syukaisyo_rojin_ikoino_ie_button],  "会館・ホール/地域集会所・老人憩いの家")
-    buttons.store(params[:gakko_hoikusyo_button],  "学校・保育所")
-    buttons.store(params[:gakko_sonota_button],  "学校・保育所/学校(その他)")
-    buttons.store(params[:kouto_gakko_button],  "学校・保育所/高等学校")
-    buttons.store(params[:syo_gakko_button],  "学校・保育所/小学校")
-    buttons.store(params[:daigaku_button],  "学校・保育所/大学")
-    buttons.store(params[:chugakko_button],  "学校・保育所/中学校")
-    buttons.store(params[:hoikusyo_button],  "学校・保育所/保育所")
-    buttons.store(params[:yochien_button],  "学校・保育所/幼稚園")
-    buttons.store(params[:kankoucho_button],  "官公庁")
-    buttons.store(params[:kunino_kikan_button],  "官公庁/国の機関")
-    buttons.store(params[:shi_kikan_button],  "官公庁/市の機関")
-    buttons.store(params[:fu_kikan_button],  "官公庁/府の機関")
-    buttons.store(params[:kankyo_recycle_button],  "環境・リサイクル")
-    buttons.store(params[:furukami_kaisyu_kyoryokuten_button],  "環境・リサイクル/古紙回収協力店")
-    buttons.store(params[:keisatsu_syobo_button],  "警察・消防")
-    buttons.store(params[:keisatus_koban_button],  "警察・消防/警察・交番")
-    buttons.store(params[:syobosyo_button],  "警察・消防/消防署")
-    buttons.store(params[:koen_sports_button],  "公園・スポーツ")
-    buttons.store(params[:sports_shisetsu_button],  "公園・スポーツ/スポーツ施設")
-    buttons.store(params[:koen_button],  "公園・スポーツ/公園")
-    buttons.store(params[:jido_koen_hiroba_button],  "公園・スポーツ/児童遊園・広場")
-    buttons.store(params[:kosyu_toilet_button],  "公衆トイレ")
-    buttons.store(params[:kosyu_benjyo_button],  "公衆トイレ/公衆便所")
-    buttons.store(params[:kurumaisu_taio_kosyu_benjyo_button],  "公衆トイレ/車いす対応公衆便所")
-    buttons.store(params[:tyusyajyo_tyurinjyo_button],  "駐車場・駐輪場")
-    buttons.store(params[:bike_tyusyajyo_button],  "駐車場・駐輪場/バイク駐車場")
-    buttons.store(params[:ekisyuhen_tyurinjyo_button],  "駐車場・駐輪場/駅周辺駐輪場")
-    buttons.store(params[:ekisyuhen_tyurinjyo_sonota_button],  "駐車場・駐輪場/駅周辺駐輪場（その他）")
-    buttons.store(params[:jitensya_hokanjyo_button],  "駐車場・駐輪場/自転車保管所")
-    buttons.store(params[:bunka_kanko_button],  "文化・観光")
-    buttons.store(params[:bunka_kanko_sonota_button],  "文化・観光/その他施設")
-    buttons.store(params[:tosyokan_button],  "文化・観光/図書館")
-    buttons.store(params[:toshi_keikan_shigen_button],  "文化・観光/都市景観資源")
-    buttons.store(params[:bijyutsukan_hakubutsukan_button],  "文化・観光/美術館・博物館")
-    buttons.store(params[:meisyo_kyuseki_button],  "名所・旧跡")
-    buttons.store(params[:syaji_button],  "名所・旧跡/社寺")
-    buttons.store(params[:meisyo_kyuseki_syosai_button],  "名所・旧跡/名所・旧跡")
-
-    return buttons
 
   end
 
