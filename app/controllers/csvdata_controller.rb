@@ -10,12 +10,7 @@ class CsvdataController < ApplicationController
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
-    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
-      marker.lat csv.y
-      marker.lng csv.x
-      marker.infowindow csv.shisetsu_name
-      marker.json({title: csv.shisetsu_name})
-    end
+    @hash = gmap_hash(@csv_obj)
 
     @chiku_array = Array.new{ Array.new(2)}
 
@@ -52,16 +47,10 @@ class CsvdataController < ApplicationController
     end
 
     if @csv_obj.blank?
-      logger.debug("結果なし")
       flash.now[:alert] = "検索結果が存在しませんでした。"
     end
 
-    @hash = Gmaps4rails.build_markers(@csv_obj) do |csv, marker|
-      marker.lat csv.y
-      marker.lng csv.x
-      marker.infowindow csv.shisetsu_name
-      marker.json({title: csv.shisetsu_name})
-    end
+    @hash = gmap_hash(@csv_obj)
 
     @chiku_array = Array.new{ Array.new(2)}
 
@@ -79,6 +68,17 @@ class CsvdataController < ApplicationController
         return false
     else
         return true
+    end
+
+  end
+
+  def gmap_hash(obj)
+
+    hash = Gmaps4rails.build_markers(obj) do |csv, marker|
+      marker.lat csv.y
+      marker.lng csv.x
+      marker.infowindow csv.shisetsu_name
+      marker.json({title: csv.shisetsu_name})
     end
 
   end

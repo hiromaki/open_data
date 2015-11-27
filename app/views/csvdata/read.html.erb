@@ -3,16 +3,13 @@
   <div class="row">
     <div class="col-md-3 sidebar">
 <%= form_tag({controller: :csvdata, action: :read}, {name: "form", id: "form" }) do %>
-
       <%= hidden_field_tag 'submit_button' %>
-
       <div class="panel panel-default">
         <div class="panel-heading">検索条件</div>
           <ul class="list-group">
           <li class="list-group-item"><%= text_field :shisetsu_name, :shisetsu_name, class: "form-control" %></li>
          </ul>
       </div>
-
       <script type="text/javascript">
         function cnfmAndSubmit(submit_type) {
 
@@ -21,29 +18,20 @@
           var target = document.getElementById("form");
           target.method = "post";
           target.submit();
-
         }
-
       </script>
-
       <div class="panel panel-default">
         <div class="panel-heading">地区</div>
           <div class="list-group">
-
           <%= hidden_field_tag 'check[chikus][]' %>
           <% @chiku_array.each.with_index do |chiku, i| %>
             <label class="checkbox-inline">
               <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
               <%= chiku[0] %>
-              <!-- <input type="checkbox" id="inlineCheckbox<%=chiku%>" value="<%=chiku%>"><%=chiku%> -->
             </label>
           <% end %>
-
-
          </div>
       </div>
-
-
       <div class="panel panel-default">
         <div class="panel-heading">カテゴリー</div>
           <div class="list-group">
@@ -52,19 +40,12 @@
             <% end %>
           </div>
       </div>
-
-
-<% end %>
-
-
     </div>
+<% end %>
     <div class="col-md-9 content-area">
-
-
       <div style='width: 800px;'>
         <div id="map" style='width: 800px; height: 500px;'></div>
       </div>
-
       <script type="text/javascript">
           // handler = Gmaps.build('Google');
           // handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
@@ -73,55 +54,39 @@
           //   handler.fitMapToBounds();
           // });
       </script>
-
       <%= page_entries_info @csv_obj %>
-      <table class="table table-striped table-bordered table-hover table-condensed">
-        <thead>
-          <tr>
-            <th>施設名</th>
-            <th>所在地</th>
-            <th>地区名</th>
-            <th>TEL</th>
-            <th>FAX</th>
-            <th>詳細情報</th>
-            <th>URL</th>
-            <th>カテゴリー</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% if @csv_obj.present? %>
-          <% @csv_obj.each do |csv| %>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+          <thead>
             <tr>
-    <!--
-              <td><%= csv.x %></td>
-              <td><%= csv.y %></td>
-    -->
-              <td><%= csv.shisetsu_name %></td>
-    <!--
-              <td><%= csv.shisetsu_name_kana %></td>
-              <td><%= csv.shisetsu_name_all %></td>
-    -->
-              <td><%= csv.syozaichi %></td>
-              <td><%= csv.chiku_name %></td>
-              <td><%= csv.tel %></td>
-              <td><%= csv.fax %></td>
-              <td><%= csv.syosai_info %><%= csv.kaikan_jikan %><%= csv.barrier_free_info %><%= csv.tyurinjyo_pc %><%= csv.tyurinjyo_kei %></td>
-              <td><%= csv.url %></td>
-    <!--
-              <td><%= csv.dai_bunrui %></td>
-              <td><%= csv.syo_bunrui %></td>
-    -->
-              <td><%= csv.category %></td>
-    <!--
-              <td><%= csv.icon_no %></td>
-              <td><%= csv.shisetsu_id %></td>
-    -->
+              <th style="width:100px;">施設名</th>
+              <th style="width:100px;">所在地</th>
+              <th style="width:100px;">地区名</th>
+              <th style="width:100px;">TEL</th>
+              <th style="width:100px;">FAX</th>
+              <th style="width:100px;">詳細情報</th>
+              <th style="width:100px;">URL</th>
+              <th style="width:100px;">カテゴリー</th>
             </tr>
-          <% end %>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% if @csv_obj.present? %>
+            <% @csv_obj.each do |csv| %>
+              <tr>
+                <td><%= csv.shisetsu_name %></td>
+                <td><%= csv.syozaichi %></td>
+                <td><%= csv.chiku_name %></td>
+                <td><%= csv.tel %></td>
+                <td><%= csv.fax %></td>
+                <td><%= (csv.syosai_info.to_s + csv.kaikan_jikan.to_s + csv.barrier_free_info.to_s + csv.tyurinjyo_pc.to_s + csv.tyurinjyo_kei.to_s)[0,10] %></td>
+                <td><%= csv.url.to_s[0,10] %></td>
+                <td><%= csv.category %></td>
+              </tr>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
       <%= paginate @csv_obj %>
     </div>
   </div>
