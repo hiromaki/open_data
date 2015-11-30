@@ -11,7 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118041355) do
+ActiveRecord::Schema.define(version: 20151130052812) do
+
+  create_table "facilities", force: :cascade do |t|
+    t.float    "x"
+    t.float    "y"
+    t.string   "shisetsu_name"
+    t.string   "shisetsu_name_kana"
+    t.string   "shisetsu_name_all"
+    t.string   "syozaichi"
+    t.string   "chiku_name"
+    t.string   "tel"
+    t.string   "fax"
+    t.string   "syosai_info"
+    t.string   "kaikan_jikan"
+    t.string   "url"
+    t.string   "barrier_free_info"
+    t.string   "tyurinjyo_pc"
+    t.string   "tyurinjyo_kei"
+    t.string   "dai_bunrui"
+    t.string   "syo_bunrui"
+    t.string   "category"
+    t.string   "icon_no"
+    t.string   "shisetsu_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "open_data", force: :cascade do |t|
     t.string   "x"

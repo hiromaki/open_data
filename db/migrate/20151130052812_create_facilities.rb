@@ -1,8 +1,9 @@
-class CreateOpenData < ActiveRecord::Migration
+class CreateFacilities < ActiveRecord::Migration
   def change
-    create_table :open_data do |t|
-      t.string :x
-      t.string :y
+    create_table :facilities do |t|
+
+      t.float :x
+      t.float :y
       t.string :shisetsu_name
       t.string :shisetsu_name_kana
       t.string :shisetsu_name_all
@@ -21,7 +22,6 @@ class CreateOpenData < ActiveRecord::Migration
       t.string :category
       t.string :icon_no
       t.string :shisetsu_id
-      t.string :latlng
 
       t.timestamps null: false
     end

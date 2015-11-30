@@ -1,0 +1,98 @@
+
+<%= form_tag({controller: :facility, action: :search}, {name: "form", id: "form" }) do %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 sidebar">
+      <div class="panel panel-default">
+        <div class="panel-heading">検索条件</div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <%= submit_tag "下記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
+          </li>
+          <li class="list-group-item">
+            <div class="panel panel-default">
+              <div class="panel-heading">名称</div>
+                <ul class="list-group">
+                  <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @shisetsu_name_value %></li>
+               </ul>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">カテゴリー</div>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @category_selected), class: "form-control", include_blank: true %>
+                </li>
+              </ul>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">地区</div>
+              <div class="list-group">
+                <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
+                <% @chiku_array.each.with_index do |chiku, i| %>
+                  <label class="checkbox-inline">
+                    <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
+                    <%= chiku[0] %>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9 content-area">
+      <% if @csv_obj.present? %>
+        <div style='width: 800px;'>
+          <div id="map" style='width: 800px; height: 500px;'></div>
+        </div>
+        <script type="text/javascript">
+            // handler = Gmaps.build('Google');
+            // handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+            //   markers = handler.addMarkers(<%=raw @hash.to_json %>);
+            //   handler.bounds.extendWith(markers);
+            //   handler.fitMapToBounds();
+            // });
+        </script>
+        <%= page_entries_info @csv_obj %>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                <th style="width:10%;">施設名</th>
+                <th style="width:18%;">所在地</th>
+                <th style="width:10%;">地区名</th>
+                <th style="width:15%;">TEL</th>
+                <th style="width:15%;">FAX</th>
+                <th style="width:15%;">詳細情報</th>
+                <th style="width:10%;">URL</th>
+                <th style="width:7%;">カテゴリー</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @csv_obj.each do |csv| %>
+                <tr>
+                  <%= hidden_field_tag 'id', value = csv.id %>
+                  <td><%= csv.shisetsu_name %></td>
+                  <td><%= csv.syozaichi %></td>
+                  <td><%= csv.chiku_name %></td>
+                  <td><%= csv.tel %></td>
+                  <td><%= csv.fax %></td>
+                  <td>
+                    <%= str_ellipsis(csv.syosai_info.to_s + csv.kaikan_jikan.to_s + csv.barrier_free_info.to_s + csv.tyurinjyo_pc.to_s + csv.tyurinjyo_kei.to_s,15) %>
+                  </td>
+                  <td>
+                    <%= str_ellipsis(csv.url,20) %>
+                  </td>
+                  <td><%= csv.category %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <%= paginate @csv_obj %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %>
+
