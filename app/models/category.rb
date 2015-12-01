@@ -50,6 +50,11 @@ class Category < ActiveHash::Base
     {id: 48, group_id: "12", group_name: "", param_name: "bijyutsukan_hakubutsukan_button", db_name: "文化・観光/美術館・博物館"},
     {id: 49, group_id: "13", group_name: "", param_name: "meisyo_kyuseki_button", db_name: "名所・旧跡"},
     {id: 50, group_id: "13", group_name: "", param_name: "syaji_button", db_name: "名所・旧跡/社寺"},
-    {id: 51, group_id: "13", group_name: "", param_name: "meisyo_kyuseki_syosai_button", db_name: "名所・旧跡/名所・旧跡"}
+    {id: 51, group_id: "13", group_name: "", param_name: "meisyo_kyuseki_syosai_button", db_name: "名所・旧跡/名所・旧跡"},
+    {id: 52, group_id: "14", group_name: "", param_name: "bosai_hinansyo", db_name: "防災関連施設 - 避難所"},
+    {id: 53, group_id: "14", group_name: "", param_name: "bosai_heriport", db_name: "防災関連施設 - 災害時用へリポート"},
+    {id: 54, group_id: "14", group_name: "", param_name: "bosai_boukasuisou", db_name: "防災関連施設 - 防火水槽など"},
+    {id: 55, group_id: "14", group_name: "", param_name: "bosai_supika", db_name: "防災関連施設 - 防災スピーカー"},
+    {id: 56, group_id: "14", group_name: "", param_name: "bosai_hinan_biru", db_name: "防災関連施設 - 津波避難ビル"}
   ]
 end

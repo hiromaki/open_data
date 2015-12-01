@@ -6,6 +6,8 @@ class Tasks::FacilityDataInsert
 
     # bundle exec rails runner Tasks::FacilityDataInsert.execute
 
+    Facility.delete_all
+
     # 施設情報ポイントデータ（全体）
     url = "http://www.city.osaka.lg.jp/contents/wdu090/opendata/mapnavoskdat_csv/mapnavoskdat_shisetsuall.csv"
 
@@ -107,9 +109,9 @@ class Tasks::FacilityDataInsert
             facility.shisetsu_name = row[2]
             facility.syozaichi = row[3]
             facility.chiku_name = row[4]
-            facility.syo_bunrui = row[6]
-            facility.category = row[7]
-            facility.shisetsu_id = row[8]
+            facility.syo_bunrui = row[5]
+            facility.category = row[6]
+            facility.shisetsu_id = row[7]
           elsif url == url_base + "mapnavoskdat_bousaisp.csv"
             facility.x = row[0]
             facility.y = row[1]
