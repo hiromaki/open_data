@@ -7,9 +7,6 @@
         <div class="panel-heading">検索条件</div>
         <ul class="list-group">
           <li class="list-group-item">
-            <%= submit_tag "下記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
-          </li>
-          <li class="list-group-item">
             <div class="panel panel-default">
               <div class="panel-heading">名称</div>
                 <ul class="list-group">
@@ -38,6 +35,9 @@
                 <% end %>
               </div>
             </div>
+          </li>
+          <li class="list-group-item">
+            <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
           </li>
         </ul>
       </div>
