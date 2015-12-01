@@ -139,5 +139,7 @@ class Tasks::FacilityDataInsert
 
     end
 
+    Facility.where("chiku_name is null").update_all("chiku_name = 'その他'")
+
   end
 end
