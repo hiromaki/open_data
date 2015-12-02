@@ -1,5 +1,5 @@
 
-<%= form_tag({controller: :facility, action: :search}, {name: "form", id: "form" }) do %>
+<%= form_tag({controller: :facility, action: :index}, {name: "form", id: "form" }) do %>
 <div class="container">
   <div class="row">
     <div class="col-md-3 sidebar">
@@ -54,7 +54,6 @@
 
     </div>
     <div class="col-md-9 content-area">
-      <% if @csv_obj.present? %>
         <div class="map_container">
           <div id="map" class="map_canvas"></div>
         </div>
@@ -84,45 +83,73 @@
               padding: 0;
           }
         </style>
-        <%= page_entries_info @csv_obj %>
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover table-condensed">
-            <thead>
-              <tr>
-                <th style="width:10%;">施設名</th>
-                <th style="width:18%;">所在地</th>
-                <th style="width:10%;">地区名</th>
-                <th style="width:15%;">TEL</th>
-                <th style="width:15%;">FAX</th>
-                <th style="width:15%;">詳細情報</th>
-                <th style="width:10%;">URL</th>
-                <th style="width:7%;">カテゴリー</th>
-              </tr>
-            </thead>
+          <table class="table table-bordered table-hover table-condensed">
             <tbody>
-              <% @csv_obj.each do |csv| %>
                 <tr>
-                  <%= hidden_field_tag 'id', value = csv.id %>
-                  <td><%= csv.shisetsu_name %></td>
-                  <td><%= csv.syozaichi %></td>
-                  <td><%= csv.chiku_name %></td>
-                  <td><%= csv.tel %></td>
-                  <td><%= csv.fax %></td>
-                  <td>
-                    <%= str_ellipsis(csv.syosai_info.to_s + csv.kaikan_jikan.to_s + csv.barrier_free_info.to_s + csv.tyurinjyo_pc.to_s + csv.tyurinjyo_kei.to_s,15) %>
-                  </td>
-                  <td>
-                    <%= str_ellipsis(csv.url,20) %>
-                  </td>
-                  <td><%= csv.category %></td>
+                  <th style="width:20%;" class="info">施設名</th>
+                  <td style="width:80%;"><%= @facility.shisetsu_name %></td>
                 </tr>
-              <% end %>
+                <tr>
+                  <th class="info">施設名（かな）</th>
+                  <td><%= @facility.shisetsu_name_kana %></td>
+                </tr>
+                <tr>
+                  <th class="info">所在地</th>
+                  <td><%= @facility.syozaichi %></td>
+                </tr>
+                <tr>
+                  <th class="info">地区名</th>
+                  <td><%= @facility.chiku_name %></td>
+                </tr>
+                <tr>
+                  <th class="info">TEL</th>
+                  <td><%= @facility.tel %></td>
+                </tr>
+                <tr>
+                  <th class="info">FAX</th>
+                  <td><%= @facility.fax %></td>
+                </tr>
+                <tr>
+                  <th class="info">詳細情報</th>
+                  <td><%= @facility.syosai_info %></td>
+                </tr>
+                <tr>
+                  <th class="info">開館時間</th>
+                  <td><%= @facility.kaikan_jikan %></td>
+                </tr>
+                <tr>
+                  <th class="info">URL</th>
+                  <td><%= @facility.url %></td>
+                </tr>
+                <tr>
+                  <th class="info">バリアフリー情報</th>
+                  <td><%= @facility.barrier_free_info %></td>
+                </tr>
+                <tr>
+                  <th class="info">駐輪場（PC）</th>
+                  <td><%= @facility.tyurinjyo_pc %></td>
+                </tr>
+                <tr>
+                  <th class="info">駐輪場（携）</th>
+                  <td><%= @facility.tyurinjyo_kei %></td>
+                </tr>
+                <tr>
+                  <th class="info">大分類</th>
+                  <td><%= @facility.dai_bunrui %></td>
+                </tr>
+                <tr>
+                  <th class="info">小分類</th>
+                  <td><%= @facility.syo_bunrui %></td>
+                </tr>
+                <tr>
+                  <th class="info">カテゴリー</th>
+                  <td><%= @facility.category %></td>
+                </tr>
             </tbody>
           </table>
         </div>
-        <%= paginate @csv_obj %>
       </div>
-    <% end %>
   </div>
 </div>
 <% end %>

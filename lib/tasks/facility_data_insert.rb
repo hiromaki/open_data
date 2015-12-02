@@ -141,5 +141,9 @@ class Tasks::FacilityDataInsert
 
     Facility.where("chiku_name is null").update_all("chiku_name = 'その他'")
 
+    Chiku.all.each do |chiku|
+      Facility.where("chiku_name = 'その他' and syozaichi like '%#{chiku.name}%' ").update_all("chiku_name = '#{chiku.name}'")
+    end
+
   end
 end

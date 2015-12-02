@@ -1,0 +1,128 @@
+
+<%= form_tag({controller: :facility, action: :index}, {name: "form", id: "form" }) do %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 sidebar">
+      <div class="panel panel-default">
+        <div class="panel-heading">検索条件</div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="panel panel-default">
+              <div class="panel-heading">名称</div>
+                <ul class="list-group">
+                  <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @shisetsu_name_value %></li>
+               </ul>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">カテゴリー</div>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @category_selected), class: "form-control", include_blank: true %>
+                </li>
+              </ul>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                地区
+              </div>
+              <div class="list-group">
+                <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
+                <% @chiku_array.each.with_index do |chiku, i| %>
+                  <label class="checkbox-inline">
+                    <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
+                    <%= chiku[0] %>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">このサイトについて</div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
+            <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
+          </li>
+        </ul>
+      </div>
+<% end %>
+    </div>
+    <div class="col-md-9 content-area">
+      <% if @facilities.present? %>
+        <div class="map_container">
+          <div id="map" class="map_canvas"></div>
+        </div>
+        <script type="text/javascript">
+          handler = Gmaps.build('Google');
+          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+            markers = handler.addMarkers(<%=raw @gmap_hash.to_json %>);
+            handler.bounds.extendWith(markers);
+            handler.fitMapToBounds();
+          });
+        </script>
+        <style type="text/css">
+          .map_container {
+              position: relative;
+              width: 100%;
+              margin-bottom: 20px;
+              padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+          }
+
+          .map_container .map_canvas {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              margin: 0;
+              padding: 0;
+          }
+        </style>
+        <%= page_entries_info @facilities %>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                <th style="width:10%;" class="info">施設名</th>
+                <th style="width:18%;" class="info">所在地</th>
+                <th style="width:10%;" class="info">地区名</th>
+                <th style="width:15%;" class="info">TEL</th>
+                <th style="width:15%;" class="info">FAX</th>
+                <th style="width:15%;" class="info">詳細情報</th>
+                <th style="width:10%;" class="info">URL</th>
+                <th style="width:7%;" class="info">カテゴリー</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @facilities.each do |facility| %>
+                <tr>
+                  <%= hidden_field_tag 'id', value = facility.id %>
+                  <td><%= link_to(facility.shisetsu_name, "/facility/#{facility.id}") %></td>
+                  <td><%= facility.syozaichi %></td>
+                  <td><%= facility.chiku_name %></td>
+                  <td><%= facility.tel %></td>
+                  <td><%= facility.fax %></td>
+                  <td>
+                    <%= str_ellipsis(facility.syosai_info.to_s + facility.kaikan_jikan.to_s + facility.barrier_free_info.to_s + facility.tyurinjyo_pc.to_s + facility.tyurinjyo_kei.to_s,15) %>
+                  </td>
+                  <td>
+                    <%= str_ellipsis(facility.url,20) %>
+                  </td>
+                  <td><%= facility.category %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <%= paginate @facilities %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
