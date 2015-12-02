@@ -5,6 +5,7 @@ class Tasks::FacilityDataInsert
   def self.execute
 
     # bundle exec rails runner Tasks::FacilityDataInsert.execute
+    # heroku run rails runner Tasks::FacilityDataInsert.execute
 
     Facility.delete_all
 
@@ -144,6 +145,11 @@ class Tasks::FacilityDataInsert
     Chiku.all.each do |chiku|
       Facility.where("chiku_name = 'その他' and syozaichi like '%#{chiku.name}%' ").update_all("chiku_name = '#{chiku.name}'")
     end
+
+    Facility.where("chiku_name = 'その他' and shisetsu_name = '淀川河川敷太子橋' ").update_all("chiku_name = '旭区'")
+    Facility.where("chiku_name = 'その他' and shisetsu_name = '旭公園野球場' ").update_all("chiku_name = '旭区'")
+    Facility.where("chiku_name = 'その他' and shisetsu_name = 'グランフロント大阪　南館' ").update_all("chiku_name = '北区'")
+    Facility.where("chiku_name = 'その他' and shisetsu_name = '神崎川日光ハイツ' ").update_all("chiku_name = '大阪市以外'")
 
   end
 end

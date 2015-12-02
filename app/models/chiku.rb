@@ -24,6 +24,6 @@ class Chiku < ActiveHash::Base
     {id: 22, name: '平野区'},
     {id: 23, name: '北区'},
     {id: 24, name: '中央区'},
-    {id: 25, name: 'その他'}
+    {id: 25, name: '大阪市以外'}
   ]
 end

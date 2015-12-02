@@ -1,4 +1,12 @@
 
+        <script type="text/javascript">
+          $(function(){
+            $('#chiku_all_check').on('change', function() {
+              $('input[id^=check_chikus_').prop('checked', this.checked);
+            });
+          });
+        </script>
+
 <%= form_tag({controller: :facility, action: :index}, {name: "form", id: "form" }) do %>
 <div class="container">
   <div class="row">
@@ -25,15 +33,23 @@
               <div class="panel-heading">
                 地区
               </div>
-              <div class="list-group">
-                <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
-                <% @chiku_array.each.with_index do |chiku, i| %>
-                  <label class="checkbox-inline">
-                    <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
-                    <%= chiku[0] %>
-                  </label>
-                <% end %>
-              </div>
+              <ul class="list-group">
+                <li class="list-group-item">
+                    <label class="checkbox-inline">
+                      &nbsp;&nbsp;<%= check_box_tag 'chiku_all_check', @chiku_all_check, @chiku_all_check, id: "chiku_all_check" %>
+                      全てチェック／解除
+                    </label>
+                </li>
+                <li class="list-group-item">
+                  <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
+                  <% @chiku_array.each.with_index do |chiku, i| %>
+                    <label class="checkbox-inline">
+                      <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
+                      <%= chiku[0] %>
+                    </label>
+                  <% end %>
+                </li>
+              </ul>
             </div>
           </li>
           <li class="list-group-item">
@@ -103,7 +119,11 @@
               <% @facilities.each do |facility| %>
                 <tr>
                   <%= hidden_field_tag 'id', value = facility.id %>
-                  <td><%= link_to(facility.shisetsu_name, "/facility/#{facility.id}") %></td>
+                  <% if facility.shisetsu_name.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                    <td><%= link_to(facility.shisetsu_name, "/facility/#{facility.id}") %></td>
+                  <% end %>
                   <td><%= facility.syozaichi %></td>
                   <td><%= facility.chiku_name %></td>
                   <td><%= facility.tel %></td>

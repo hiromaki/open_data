@@ -120,11 +120,19 @@
                 </tr>
                 <tr>
                   <th class="info">URL</th>
-                  <td><%= @facility.url %></td>
+                  <% if @facility.url.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                    <td><%= link_to(@facility.url, @facility.url, :target=>["_blank"]) %></td>
+                  <% end %>
                 </tr>
                 <tr>
                   <th class="info">バリアフリー情報</th>
-                  <td><%= @facility.barrier_free_info %></td>
+                  <% if @facility.barrier_free_info.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                  <td><%= link_to(@facility.barrier_free_info, @facility.barrier_free_info, :target=>["_blank"]) %></td>
+                  <% end %>
                 </tr>
                 <tr>
                   <th class="info">駐輪場（PC）</th>
