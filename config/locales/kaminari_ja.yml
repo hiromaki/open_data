@@ -10,6 +10,8 @@ ja:
     page_entries_info:
       one_page:
         display_entries:
+          zero: "No %{entry_name} found"
           one: "検索結果:<b>1</b>"
+          other: "検索結果:<b>%{count}</b>"
       more_pages:
         display_entries: "検索結果:<b>%{total}</b>(表示中：<b>%{first}&nbsp;-&nbsp;%{last}</b>)"

@@ -31,7 +31,7 @@ class FacilityController < ApplicationController
 
     chiku_array = Array.new{ Array.new(2)}
 
-    if params[:category] == ""
+    if params[:category].blank?
       @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
     else
       @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%'").where("category like '" + params[:category] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)

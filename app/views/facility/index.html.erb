@@ -7,12 +7,12 @@
           <div id="map" class="map_canvas"></div>
         </div>
         <script type="text/javascript">
-          // handler = Gmaps.build('Google');
-          // handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-          //   markers = handler.addMarkers(<%=raw @gmap_hash.to_json %>);
-          //   handler.bounds.extendWith(markers);
-          //   handler.fitMapToBounds();
-          // });
+          handler = Gmaps.build('Google');
+          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+            markers = handler.addMarkers(<%=raw @gmap_hash.to_json %>);
+            handler.bounds.extendWith(markers);
+            handler.fitMapToBounds();
+          });
         </script>
         <style type="text/css">
           .map_container {

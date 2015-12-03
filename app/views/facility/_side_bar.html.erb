@@ -6,7 +6,7 @@
         });
       });
     </script>
-      <%= form_tag({controller: :facility, action: :search}, {name: "form", id: "form" }) do %>
+      <%= form_tag('/facility/search') do %> 
       <div class="panel panel-default">
         <div class="panel-heading">検索条件</div>
         <ul class="list-group">
@@ -58,9 +58,9 @@
         <div class="panel-heading">このサイトについて</div>
         <ul class="list-group">
           <li class="list-group-item">
-<!--             <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
+            <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
             <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
- -->          </li>
+          </li>
         </ul>
       </div>
       <% end %>

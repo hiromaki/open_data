@@ -150,6 +150,7 @@ class Tasks::FacilityDataInsert
     Facility.where("chiku_name = 'その他' and shisetsu_name = '旭公園野球場' ").update_all("chiku_name = '旭区'")
     Facility.where("chiku_name = 'その他' and shisetsu_name = 'グランフロント大阪　南館' ").update_all("chiku_name = '北区'")
     Facility.where("chiku_name = 'その他' and shisetsu_name = '神崎川日光ハイツ' ").update_all("chiku_name = '大阪市以外'")
+    Facility.where("shisetsu_name is null ").update_all("shisetsu_name = '施設名称不明'")
 
   end
 end

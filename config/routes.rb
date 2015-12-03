@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   # root 'csvdata#insert'
   root 'facility#index'
   # Example of regular route:
-  post '/' => 'facility#search'
+  post '/facility/search' => 'facility#search'
+  get '/facility/search' => 'facility#search'
+
   # get '/:page' => 'facility#search'
   get '/facility/:id' => "facility#show"
   # Example of named route that can be invoked with purchase_url(id: product.id)
