@@ -86,16 +86,24 @@
                   <% if @facility.barrier_free_info.blank? %>
                     <td>&nbsp;</td>
                   <% else %>
-                  <td><%= link_to(@facility.barrier_free_info, @facility.barrier_free_info, :target=>["_blank"]) %></td>
+                    <td><%= link_to(@facility.barrier_free_info, @facility.barrier_free_info, :target=>["_blank"]) %></td>
                   <% end %>
                 </tr>
                 <tr>
                   <th class="info">駐輪場（PC）</th>
-                  <td><%= @facility.tyurinjyo_pc %></td>
+                  <% if @facility.tyurinjyo_pc.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                    <td><%= link_to(@facility.tyurinjyo_pc, @facility.tyurinjyo_pc, :target=>["_blank"]) %></td>
+                  <% end %>
                 </tr>
                 <tr>
                   <th class="info">駐輪場（携）</th>
-                  <td><%= @facility.tyurinjyo_kei %></td>
+                  <% if @facility.tyurinjyo_kei.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                    <td><%= link_to(@facility.tyurinjyo_kei, @facility.tyurinjyo_kei, :target=>["_blank"]) %></td>
+                  <% end %>
                 </tr>
                 <tr>
                   <th class="info">大分類</th>
