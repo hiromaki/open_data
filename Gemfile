@@ -58,3 +58,5 @@ gem 'gmaps4rails'
 gem 'geocoder'
 
 gem 'active_hash'
+
+gem 'google-analytics-rails'
