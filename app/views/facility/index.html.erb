@@ -1,80 +1,76 @@
-<div class="container">
-  <div class="row">
-    <%= render 'facility/side_bar' %>
-    <div class="col-md-9 content-area">
-      <% if @facilities.present? %>
-        <div class="map_container">
-          <div id="map" class="map_canvas"></div>
-        </div>
-        <script type="text/javascript">
-          handler = Gmaps.build('Google');
-          handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-            markers = handler.addMarkers(<%=raw @gmap_hash.to_json %>);
-            handler.bounds.extendWith(markers);
-            handler.fitMapToBounds();
-          });
-        </script>
-        <style type="text/css">
-          .map_container {
-              position: relative;
-              width: 100%;
-              margin-bottom: 20px;
-              padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
-          }
+<%= render 'facility/side_bar' %>
+<div class="col-md-9 content-area">
+  <% if @facilities.present? %>
+    <div class="map_container">
+      <div id="map" class="map_canvas"></div>
+    </div>
+    <script type="text/javascript">
+      handler = Gmaps.build('Google');
+      handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers(<%=raw @gmap_hash.to_json %>);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+      });
+    </script>
+    <style type="text/css">
+      .map_container {
+          position: relative;
+          width: 100%;
+          margin-bottom: 20px;
+          padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+      }
 
-          .map_container .map_canvas {
-              position: absolute;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              margin: 0;
-              padding: 0;
-          }
-        </style>
-        <%= page_entries_info @facilities %>
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover table-condensed">
-            <thead>
-              <tr>
-                <th style="width:10%;" class="info">施設名</th>
-                <th style="width:18%;" class="info">所在地</th>
-                <th style="width:10%;" class="info">地区名</th>
-                <th style="width:15%;" class="info">TEL</th>
-                <th style="width:15%;" class="info">FAX</th>
-                <th style="width:15%;" class="info">詳細情報</th>
-                <th style="width:10%;" class="info">URL</th>
-                <th style="width:7%;" class="info">カテゴリー</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @facilities.each do |facility| %>
-                <tr>
-                  <%= hidden_field_tag 'id', value = facility.id %>
-                  <% if facility.shisetsu_name.blank? %>
-                    <td>&nbsp;</td>
-                  <% else %>
-                    <td><%= link_to(facility.shisetsu_name, "/facility/#{facility.id}") %></td>
-                  <% end %>
-                  <td><%= facility.syozaichi %></td>
-                  <td><%= facility.chiku_name %></td>
-                  <td><%= facility.tel %></td>
-                  <td><%= facility.fax %></td>
-                  <td>
-                    <%= str_ellipsis(facility.syosai_info.to_s + facility.kaikan_jikan.to_s + facility.barrier_free_info.to_s + facility.tyurinjyo_pc.to_s + facility.tyurinjyo_kei.to_s,15) %>
-                  </td>
-                  <td>
-                    <%= str_ellipsis(facility.url,20) %>
-                  </td>
-                  <td><%= facility.category %></td>
-                </tr>
+      .map_container .map_canvas {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          margin: 0;
+          padding: 0;
+      }
+    </style>
+    <%= page_entries_info @facilities %>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th style="width:10%;" class="info">施設名</th>
+            <th style="width:18%;" class="info">所在地</th>
+            <th style="width:10%;" class="info">地区名</th>
+            <th style="width:15%;" class="info">TEL</th>
+            <th style="width:15%;" class="info">FAX</th>
+            <th style="width:15%;" class="info">詳細情報</th>
+            <th style="width:10%;" class="info">URL</th>
+            <th style="width:7%;" class="info">カテゴリー</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @facilities.each do |facility| %>
+            <tr>
+              <%= hidden_field_tag 'id', value = facility.id %>
+              <% if facility.shisetsu_name.blank? %>
+                <td>&nbsp;</td>
+              <% else %>
+                <td><%= link_to(facility.shisetsu_name, "/facility/#{facility.id}") %></td>
               <% end %>
-            </tbody>
-          </table>
-        </div>
-        <%= paginate @facilities %>
-      </div>
-    <% end %>
+              <td><%= facility.syozaichi %></td>
+              <td><%= facility.chiku_name %></td>
+              <td><%= facility.tel %></td>
+              <td><%= facility.fax %></td>
+              <td>
+                <%= str_ellipsis(facility.syosai_info.to_s + facility.kaikan_jikan.to_s + facility.barrier_free_info.to_s + facility.tyurinjyo_pc.to_s + facility.tyurinjyo_kei.to_s,15) %>
+              </td>
+              <td>
+                <%= str_ellipsis(facility.url,20) %>
+              </td>
+              <td><%= facility.category %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @facilities %>
   </div>
-</div>
+<% end %>
 

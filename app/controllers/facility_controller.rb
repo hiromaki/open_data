@@ -2,6 +2,8 @@ class FacilityController < ApplicationController
 
   def index
 
+    flash.now[:notice] = "検索条件を入力のうえ、検索をしてください。"
+
     chiku_array = Array.new{ Array.new(2)}
 
     @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").all).page(params[:page]).per(10)
@@ -22,6 +24,7 @@ class FacilityController < ApplicationController
     search_param[:chiku_all_check] = chiku_all_check
     search_param[:category_selected] = ""
     search_param[:shisetsu_name] = ""
+    search_param[:row_count] = 10
     @search_param = search_param
     session["search_param"] = @search_param
 
@@ -32,9 +35,9 @@ class FacilityController < ApplicationController
     chiku_array = Array.new{ Array.new(2)}
 
     if params[:category].blank?
-      @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+      @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
     else
-      @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%'").where("category like '" + params[:category] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(10)
+      @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where("category like '" + params[:category] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
     end
     shisetsu_name_value = params[:text][:shisetsu_name]
     category_selected = params[:category]
@@ -56,6 +59,7 @@ class FacilityController < ApplicationController
     search_param[:chiku_all_check] = chiku_all_check
     search_param[:category_selected] = category_selected
     search_param[:shisetsu_name] = shisetsu_name_value
+    search_param[:row_count] = params[:row_count]
     @search_param = search_param
     session["search_param"] = @search_param
 

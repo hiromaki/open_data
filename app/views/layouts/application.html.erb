@@ -13,7 +13,44 @@
     <%= csrf_meta_tags %>
     <%= analytics_init if Rails.env.production? %>
   </head>
+  <script type="text/javascript">
+  $(function() {
+      var pageTop = $('.page-top');
+      pageTop.hide();
+      $(window).scroll(function () {
+          if ($(this).scrollTop() > 600) {
+              pageTop.fadeIn();
+          } else {
+              pageTop.fadeOut();
+          }
+      });
+      pageTop.click(function () {
+          $('body, html').animate({scrollTop:0}, 500, 'swing');
+          return false;
+      });
+  });
+  </script>
+  <style>
+  .page-top {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    padding: 10px;
+    background: #7e7a7a;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    font-size: 16px;
+    color: #ffffff;
+    -ms-filter: "alpha(opacity=80)";
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+    z-index: 99;
+  }
+  </style>
   <body>
+    <a href="#" class="page-top">PAGE TOP ▲</a>
     <header class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -27,22 +64,26 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ui class="nav navbar-nav navbar-right">
+            <li><a href="#">このサイトについて</a></li>
+            <li><a href="#">お問い合わせ</a></li>
           </ui>
         </div>
       </div>
     </header>
     <div class="container">
-      <% if flash[:notice] %>
-        <div class="alert alert-success">
-          <%= flash[:notice] %>
-        </div>
-      <% end %>
-      <% if flash[:alert] %>
-        <div class="alert alert-danger">
-          <%= flash[:alert] %>
-        </div>
-      <% end %>
-      <%= yield %>
+      <div class="row">
+        <% if flash[:notice] %>
+          <div class="alert alert-success">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="alert alert-danger">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>

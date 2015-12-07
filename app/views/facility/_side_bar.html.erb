@@ -1,67 +1,75 @@
-    <div class="col-md-3 sidebar">
-    <script type="text/javascript">
-      $(function(){
-        $('#chiku_all_check').on('change', function() {
-          $('input[id^=check_chikus_]').prop('checked', this.checked);
-        });
-      });
-    </script>
-      <%= form_tag('/facility/search') do %> 
-      <div class="panel panel-default">
-        <div class="panel-heading">検索条件</div>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <div class="panel panel-default">
-              <div class="panel-heading">名称</div>
-                <ul class="list-group">
-                  <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @search_param[:shisetsu_name] %></li>
-               </ul>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">カテゴリー</div>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @search_param[:category_selected]), class: "form-control", include_blank: true %>
-                </li>
-              </ul>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                地区
-              </div>
-              <ul class="list-group">
-                <li class="list-group-item">
-                    <label class="checkbox-inline">
-                      &nbsp;&nbsp;<%= check_box_tag 'chiku_all_check', @search_param[:chiku_all_check], @search_param[:chiku_all_check], id: "chiku_all_check" %>
-                      全てチェック／解除
-                    </label>
-                </li>
-                <li class="list-group-item">
-                  <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
-                  <% @search_param[:chiku_array].each.with_index do |chiku, i| %>
-                    <label class="checkbox-inline">
-                      <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
-                      <%= chiku[0] %>
-                    </label>
-                  <% end %>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
-          </li>
-        </ul>
-      </div>
+<div class="col-md-3 sidebar">
+<script type="text/javascript">
+  $(function(){
+    $('#chiku_all_check').on('change', function() {
+      $('input[id^=check_chikus_]').prop('checked', this.checked);
+    });
+  });
+</script>
+  <%= form_tag('/facility/search') do %> 
+  <div class="panel panel-default">
+    <div class="panel-heading">検索条件</div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <div class="panel panel-default">
+          <div class="panel-heading">名称</div>
+            <ul class="list-group">
+              <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @search_param[:shisetsu_name] %></li>
+           </ul>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">表示件数</div>
+            <ul class="list-group">
+            <li class="list-group-item">
+              <%= select_tag "row_count", options_for_select(["10", "20", "30", "40","50","100","200"], @search_param[:row_count]), class: "form-control" %>
+            </li>
+           </ul>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">カテゴリー</div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @search_param[:category_selected]), class: "form-control", include_blank: true %>
+            </li>
+          </ul>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            地区
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+                <label class="checkbox-inline">
+                  &nbsp;&nbsp;<%= check_box_tag 'chiku_all_check', @search_param[:chiku_all_check], @search_param[:chiku_all_check], id: "chiku_all_check" %>
+                  全てチェック／解除
+                </label>
+            </li>
+            <li class="list-group-item">
+              <%= hidden_field_tag 'check[chikus][]' %>&nbsp;
+              <% @search_param[:chiku_array].each.with_index do |chiku, i| %>
+                <label class="checkbox-inline">
+                  <%= check_box_tag 'check[chikus][]', chiku[0], chiku[1], id: "check_chikus_#{i}" %>
+                  <%= chiku[0] %>
+                </label>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
+      </li>
+    </ul>
+  </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">このサイトについて</div>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
-            <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
-          </li>
-        </ul>
-      </div>
-      <% end %>
-    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">このサイトについて</div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
+        <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
+      </li>
+    </ul>
+  </div>
+  <% end %>
+</div>
