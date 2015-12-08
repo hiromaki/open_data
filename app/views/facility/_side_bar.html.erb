@@ -4,9 +4,52 @@
     $('#chiku_all_check').on('change', function() {
       $('input[id^=check_chikus_]').prop('checked', this.checked);
     });
+
+    $('#chikaijyun_check').on('change', function() {
+      if ($('#chikaijyun_check').prop('checked')) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            // success callback
+            function(position) {
+              $("#longitude").val(position.coords.longitude);
+              $("#latitude").val(position.coords.latitude);
+            },
+            // error callback
+            function(position) {
+              alert( "can't get position" );
+            }
+          )
+        }
+      }
+    });
+
+    // $('#submit_button').click(function(){
+    //   if ($('#chikaijyun_check').prop('checked')) {
+
+    //     if (navigator.geolocation) {
+    //       navigator.geolocation.getCurrentPosition(
+    //         // success callback
+    //         function(position) {
+    //           $("#longitude").val(position.coords.longitude);
+    //           $("#latitude").val(position.coords.latitude);
+    //         },
+    //         // error callback
+    //         function(position) {
+    //           alert( "can't get position" );
+    //         }
+    //       )
+    //     }
+    //   }
+    // });
+
   });
 </script>
-  <%= form_tag('/facility/search') do %> 
+
+  <%= form_tag('/facility/search') do %>
+
+  <%= hidden_field_tag 'longitude', @search_param[:longitude] %>
+  <%= hidden_field_tag 'latitude', @search_param[:latitude] %>
+
   <div class="panel panel-default">
     <div class="panel-heading">検索条件</div>
     <ul class="list-group">
@@ -55,9 +98,23 @@
             </li>
           </ul>
         </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            並び順
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+                <label class="checkbox-inline">
+                  &nbsp;&nbsp;<%= check_box_tag 'chikaijyun_check', @search_param[:chikaijyun_check], @search_param[:chikaijyun_check], id: "chikaijyun_check" %>
+                  現在地から近い順
+                </label>
+            </li>
+          </ul>
+        </div>
       </li>
       <li class="list-group-item">
-        <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button" %>
+        <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button", id: "submit_button" %>
       </li>
     </ul>
   </div>

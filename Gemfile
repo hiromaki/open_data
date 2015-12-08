@@ -60,3 +60,6 @@ gem 'geocoder'
 gem 'active_hash'
 
 gem 'google-analytics-rails'
+
+gem 'geokit-rails'
+gem 'geocoder'
