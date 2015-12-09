@@ -90,6 +90,16 @@ class FacilityController < ApplicationController
 
   end
 
+  def autocomplete_facility
+    facility_suggestions = Facility.autocomplete(params[:term]).pluck(:shisetsu_name)
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: facility_suggestions
+      }
+    end
+  end
+
   private
 
   def side_bar(init)

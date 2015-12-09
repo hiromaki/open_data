@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   # get '/:page' => 'facility#search'
   get '/facility/:id' => "facility#show"
+
+  get '/facility/autocomplete_facility/:term' => 'facility#autocomplete_facility'
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

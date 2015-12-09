@@ -63,3 +63,6 @@ gem 'google-analytics-rails'
 
 gem 'geokit-rails'
 gem 'geocoder'
+
+gem 'jquery-ui-rails'
+
