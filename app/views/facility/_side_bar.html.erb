@@ -72,6 +72,19 @@
     <ul class="list-group">
       <li class="list-group-item">
         <div class="panel panel-default">
+          <div class="panel-heading">
+            並び順
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+                <label class="checkbox-inline">
+                  &nbsp;&nbsp;<%= check_box_tag 'chikaijyun_check', @search_param[:chikaijyun_check], @search_param[:chikaijyun_check], id: "chikaijyun_check" %>
+                  現在地から近い順
+                </label>
+            </li>
+          </ul>
+        </div>
+        <div class="panel panel-default">
           <div class="panel-heading">名称</div>
             <ul class="list-group">
               <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @search_param[:shisetsu_name] %></li>
@@ -112,20 +125,6 @@
                   <%= chiku[0] %>
                 </label>
               <% end %>
-            </li>
-          </ul>
-        </div>
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            並び順
-          </div>
-          <ul class="list-group">
-            <li class="list-group-item">
-                <label class="checkbox-inline">
-                  &nbsp;&nbsp;<%= check_box_tag 'chikaijyun_check', @search_param[:chikaijyun_check], @search_param[:chikaijyun_check], id: "chikaijyun_check" %>
-                  現在地から近い順
-                </label>
             </li>
           </ul>
         </div>
