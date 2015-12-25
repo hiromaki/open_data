@@ -2,32 +2,26 @@ class FacilityController < ApplicationController
 
   def index
 
-    flash.now[:notice] = "検索条件を入力のうえ検索をしてください。初期表示では大阪市役所を原点として、近い順に並んでいます。"
+    flash.now[:notice] = Constants::INITIAL_DISPLAY_MESSAGE
 
     chiku_array = Array.new{ Array.new(2)}
 
-    @facilities = Kaminari.paginate_array(Facility.all.by_distance(:origin =>['34.69375', '135.50233'], :reverse => false).order("category, chiku_name")).page(params[:page]).per(10)
+    @facilities = Kaminari.paginate_array(
+                    Facility.all.by_distance(:origin =>[Constants::INITIAL_LATITUDE, Constants::INITIAL_LONGITUDE], :reverse => false)
+                    .order("category, chiku_name")
+                  ).page(params[:page]).per(Constants::INITIAL_DISPLAY_NUMBER)
 
     Chiku.all.each do |chiku|
       chiku_array.push([chiku.name, true])
     end
 
     if @facilities.blank?
-      flash.now[:alert] = "検索結果が存在しませんでした。"
+      flash.now[:alert] = Constants::SEARCH_RESULTS_ZERO
     end
 
-    @gmap_hash = gmap_hash(@facilities)
+    @gmap_hash = set_gmap_hash(@facilities)
 
-    search_param = Hash.new
-    search_param[:chiku_array] = chiku_array
-    search_param[:chiku_all_check] = true
-    search_param[:category_selected] = ""
-    search_param[:shisetsu_name] = ""
-    search_param[:row_count] = 10
-    search_param[:chikaijyun_check] = false
-    search_param[:latitude] = ""
-    search_param[:longitude] = ""
-    @search_param = search_param
+    @search_param = set_search_param(chiku_array, true, "", "", Constants::INITIAL_DISPLAY_NUMBER, false, "", "")
     session["search_param"] = @search_param
 
   end
@@ -36,20 +30,16 @@ class FacilityController < ApplicationController
 
     chiku_array = Array.new{ Array.new(2)}
 
-    # todo ここは絶対に直す
-    if params[:chikaijyun_check]
-      if params[:category].blank?
-        @facilities = Kaminari.paginate_array(Facility.by_distance(:origin =>[params[:latitude],params[:longitude]], :reverse => false).order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
-      else
-        @facilities = Kaminari.paginate_array(Facility.by_distance(:origin =>[params[:latitude],params[:longitude]], :reverse => false).order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where("category like '" + params[:category] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
-      end
-    else
-      if params[:category].blank?
-        @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
-      else
-        @facilities = Kaminari.paginate_array(Facility.order("category, chiku_name").where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'").where("category like '" + params[:category] + "%'").where(chiku_name: params[:check][:chikus])).page(params[:page]).per(params[:row_count])
-      end
-    end
+    facilities_model = Facility.order("category, chiku_name")
+    facilities_model = facilities_model.where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'")
+    facilities_model = facilities_model.where(chiku_name: params[:check][:chikus])
+
+    # 条件により動的に変更する検索条件
+    facilities_model = facilities_model.by_distance(:origin =>[params[:latitude],params[:longitude]], :reverse => false) if params[:chikaijyun_check]
+    facilities_model = facilities_model.where("category like '" + params[:category] + "%'") if params[:category].present?
+
+    @facilities = Kaminari.paginate_array(facilities_model).page(params[:page]).per(params[:row_count])
+
     shisetsu_name_value = params[:text][:shisetsu_name]
     category_selected = params[:category]
 
@@ -60,21 +50,13 @@ class FacilityController < ApplicationController
     end
 
     if @facilities.blank?
-      flash.now[:alert] = "検索結果が存在しませんでした。"
+      flash.now[:alert] = Constants::SEARCH_RESULTS_ZERO
     end
 
-    @gmap_hash = gmap_hash(@facilities)
+    @gmap_hash = set_gmap_hash(@facilities)
 
-    search_param = Hash.new
-    search_param[:chiku_array] = chiku_array
-    search_param[:chiku_all_check] = chiku_all_check
-    search_param[:category_selected] = category_selected
-    search_param[:shisetsu_name] = shisetsu_name_value
-    search_param[:row_count] = params[:row_count]
-    search_param[:chikaijyun_check] = params[:chikaijyun_check]
-    search_param[:latitude] = params[:latitude]
-    search_param[:longitude] = params[:longitude]
-    @search_param = search_param
+    @search_param = set_search_param(chiku_array, chiku_all_check, category_selected, shisetsu_name_value,
+                                       params[:row_count], params[:chikaijyun_check], params[:latitude], params[:longitude])
     session["search_param"] = @search_param
 
     render "index"
@@ -102,28 +84,34 @@ class FacilityController < ApplicationController
 
   private
 
-  def side_bar(init)
+  def set_search_param(chiku_array, chiku_all_check, category_selected, shisetsu_name, row_count, chikaijyun_check, latitude, longitude)
+
+    search_param = Hash.new
+    search_param[:chiku_array] = chiku_array
+    search_param[:chiku_all_check] = chiku_all_check
+    search_param[:category_selected] = category_selected
+    search_param[:shisetsu_name] = shisetsu_name
+    search_param[:row_count] = row_count
+    search_param[:chikaijyun_check] = chikaijyun_check
+    search_param[:latitude] = latitude
+    search_param[:longitude] = longitude
+
+    return search_param
+
   end
+
 
   def chiku_checkbox(chiku_array, target_chiku)
-
-    if chiku_array.index(target_chiku).nil?
-        return false
-    else
-        return true
-    end
-
+    return chiku_array.index(target_chiku).nil? ? false : true
   end
 
-  def gmap_hash(facilities)
-
+  def set_gmap_hash(facilities)
     hash = Gmaps4rails.build_markers(facilities) do |facility, marker|
       marker.lat facility.y
       marker.lng facility.x
       marker.infowindow facility.shisetsu_name
       marker.json({title: facility.shisetsu_name})
     end
-
   end
 
 end
