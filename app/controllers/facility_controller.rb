@@ -2,11 +2,11 @@ class FacilityController < ApplicationController
 
   def index
 
-    flash.now[:notice] = "検索条件を入力のうえ、検索をしてください。"
+    flash.now[:notice] = "検索条件を入力のうえ検索をしてください。初期表示では大阪市役所を原点として、近い順に並んでいます。"
 
     chiku_array = Array.new{ Array.new(2)}
 
-    @facilities = Kaminari.paginate_array(Facility.all.order("category, chiku_name")).page(params[:page]).per(10)
+    @facilities = Kaminari.paginate_array(Facility.all.by_distance(:origin =>['34.69375', '135.50233'], :reverse => false).order("category, chiku_name")).page(params[:page]).per(10)
 
     Chiku.all.each do |chiku|
       chiku_array.push([chiku.name, true])
