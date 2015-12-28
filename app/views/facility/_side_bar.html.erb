@@ -85,6 +85,12 @@
           </ul>
         </div>
         <div class="panel panel-default">
+          <div class="panel-heading">指定住所から近い順</div>
+            <ul class="list-group">
+              <li class="list-group-item"><%= text_field :text, :address, class: "form-control", value: @search_param[:address] %></li>
+           </ul>
+        </div>
+        <div class="panel panel-default">
           <div class="panel-heading">名称</div>
             <ul class="list-group">
               <li class="list-group-item"><%= text_field :text, :shisetsu_name, class: "form-control", value: @search_param[:shisetsu_name] %></li>
