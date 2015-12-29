@@ -70,7 +70,7 @@ class FacilityController < ApplicationController
     # 一度セッションに入れるとシンボルが文字列に変わるため
     @search_param = session["search_param"].symbolize_keys!
     @facility = Facility.find(params[:id])
-    @gmap_hash = gmap_hash(@facility)
+    @gmap_hash = set_gmap_hash(@facility)
 
   end
 
@@ -134,8 +134,6 @@ class FacilityController < ApplicationController
     end
 
     logger.debug(hash)
-
-
 
     return hash
 
