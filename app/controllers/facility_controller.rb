@@ -30,8 +30,13 @@ class FacilityController < ApplicationController
 
     result = Geocoder.search(params[:text][:address])
 
-    lat = params[:latitude]
-    lng = params[:longitude]
+    lat = Constants::INITIAL_LATITUDE
+    lng = Constants::INITIAL_LONGITUDE
+
+    if params[:chikaijyun_check]
+      lat = params[:latitude]
+      lng = params[:longitude]
+    end
 
     unless result.empty?
       logger.debug(Geocoder.search(params[:text][:address])[0].data["formatted_address"])
@@ -39,11 +44,13 @@ class FacilityController < ApplicationController
       lng = result[0].data["geometry"]["location"]["lng"]
     end
 
-    if params[:chikaijyun_check]
-      facilities_model = Facility.by_distance(:origin =>[lat,lng], :reverse => false) if params[:chikaijyun_check]
-    else
-      facilities_model = Facility.order("category, chiku_name")
-    end
+    facilities_model = Facility.by_distance(:origin =>[lat,lng], :reverse => false)
+
+    # if params[:chikaijyun_check]
+    #   facilities_model = Facility.by_distance(:origin =>[lat,lng], :reverse => false) if params[:chikaijyun_check]
+    # else
+    #   facilities_model = Facility.order("category, chiku_name")
+    # end
 
     facilities_model = facilities_model.where("shisetsu_name like '%" + params[:text][:shisetsu_name] + "%' or shisetsu_name_kana like '%" + params[:text][:shisetsu_name] + "%'")
     facilities_model = facilities_model.where(chiku_name: params[:check][:chikus])
