@@ -13,7 +13,7 @@ class Tasks::FacilityDataInsert
     url = "http://www.city.osaka.lg.jp/contents/wdu090/opendata/mapnavoskdat_csv/mapnavoskdat_shisetsuall.csv"
 
     csv = open(url)
-    @csv_obj = CSV.read(csv, encoding: "CP932:UTF-8", headers: :first_row)
+    @csv_obj = CSV.read(csv, encoding: "UTF-8", headers: :first_row)
 
     @csv_obj.each do |row|
       facility = Facility.find_by(shisetsu_id: row[19])
