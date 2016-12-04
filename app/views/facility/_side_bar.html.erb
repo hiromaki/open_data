@@ -29,37 +29,26 @@
   }
 
   $(function(){
-    // $('#chiku_all_check').on('change', function() {
-    //   $('input[id^=check_chikus_]').prop('checked', this.checked);
-    // });
+    // 現在地の読み込み
+    // loadingView(true);
+    // $('#submit_button').prop("disabled", true);
 
-    // $('#chikaijyun_check').on('change', function() {
-    //   if ($('#chikaijyun_check').prop('checked')) {
-
-        // 現在地の読み込み。ラジオボタン変更時のみとしたい。
-        loadingView(true);
-        $('#submit_button').prop("disabled", true);
-
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            // success callback
-            function(position) {
-              $("#longitude").val(position.coords.longitude);
-              $("#latitude").val(position.coords.latitude);
-            },
-            // error callback
-            function(position) {
-              alert( "can't get position" );
-            }
-          )
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        // success callback
+        function(position) {
+          $("#longitude").val(position.coords.longitude);
+          $("#latitude").val(position.coords.latitude);
+        },
+        // error callback
+        function(position) {
+          alert( "can't get position" );
         }
+      )
+    }
 
-        loadingView(false);
-        $('#submit_button').prop("disabled", false);
-
-    //   }
-    // });
-
+    // loadingView(false);
+    // $('#submit_button').prop("disabled", false);
   });
 </script>
 
