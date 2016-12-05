@@ -18,7 +18,7 @@ class Tasks::FacilityDataInsert
     @csv_obj.each do |row|
       facility = Facility.find_by(shisetsu_id: row[19])
 
-      # データがなかった場合
+      # DBにデータがない場合
       if facility.nil?
         facility = Facility.new
 
@@ -52,16 +52,11 @@ class Tasks::FacilityDataInsert
     url_base = "http://www.city.osaka.lg.jp/contents/wdu090/opendata/mapnavoskdat_csv/"
 
     urls = Array.new
-    # 防災関連施設ポイントデータ（災害時避難所・一時避難場所）
-    urls.push(url_base + "mapnavoskdat_hinanbasyo.csv")
-    # 防災関連施設ポイントデータ（災害時用へリポート）
-    urls.push(url_base + "mapnavoskdat_heliport.csv")
-    # 防災関連施設ポイントデータ（防火水槽など）
-    urls.push(url_base + "mapnavoskdat_boukasuisou.csv")
-    # 防災関連施設ポイントデータ（防災スピーカー）
-    urls.push(url_base + "mapnavoskdat_bousaisp.csv")
-    # 防災関連施設ポイントデータ（津波避難ビル）
-    urls.push(url_base + "mapnavoskdat_hinanbiru.csv")
+    urls.push(url_base + "mapnavoskdat_hinanbasyo.csv") # 防災関連施設ポイントデータ（災害時避難所・一時避難場所）
+    urls.push(url_base + "mapnavoskdat_heliport.csv") # 防災関連施設ポイントデータ（災害時用へリポート）
+    urls.push(url_base + "mapnavoskdat_boukasuisou.csv") # 防災関連施設ポイントデータ（防火水槽など）
+    urls.push(url_base + "mapnavoskdat_bousaisp.csv") # 防災関連施設ポイントデータ（防災スピーカー）
+    urls.push(url_base + "mapnavoskdat_hinanbiru.csv") # 防災関連施設ポイントデータ（津波避難ビル）
 
     for url in urls do
 
@@ -82,7 +77,7 @@ class Tasks::FacilityDataInsert
 
         facility = Facility.find_by(shisetsu_id: row[8])
 
-        # データがなかった場合
+        # DBにデータがない場合
         if facility.nil?
 
           facility = Facility.new
@@ -140,17 +135,21 @@ class Tasks::FacilityDataInsert
 
     end
 
+    # 地区がnullのデータをその他にする
     Facility.where("chiku_name is null").update_all("chiku_name = 'その他'")
 
+    # 基データで地区が何故かその他になっているものは、所在地の住所に地区を修正する
     Chiku.all.each do |chiku|
       Facility.where("chiku_name = 'その他' and syozaichi like '%#{chiku.name}%' ").update_all("chiku_name = '#{chiku.name}'")
     end
 
+    # 個別対応
     Facility.where("chiku_name = 'その他' and shisetsu_name = '淀川河川敷太子橋' ").update_all("chiku_name = '旭区'")
     Facility.where("chiku_name = 'その他' and shisetsu_name = '旭公園野球場' ").update_all("chiku_name = '旭区'")
     Facility.where("chiku_name = 'その他' and shisetsu_name = 'グランフロント大阪　南館' ").update_all("chiku_name = '北区'")
     Facility.where("chiku_name = 'その他' and shisetsu_name = '神崎川日光ハイツ' ").update_all("chiku_name = '大阪市以外'")
 
+    # 名称が不明の施設
     Facility.where("shisetsu_name is null ").update_all("shisetsu_name = '施設名称不明'")
 
   end

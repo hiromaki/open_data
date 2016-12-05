@@ -1,110 +1,102 @@
 <div class="col-md-3 sidebar">
-<style type="text/css">
-#loading-view {
- /* 領域の位置やサイズに関する設定 */
- width: 100%;
- height: 100%;
- z-index: 9999;
- position: fixed;
- top: 0;
- left: 0;
- /* 背景関連の設定 */
- background-color: #000000;
- filter: alpha(opacity=85);
- -moz-opacity: 0.85;
- -khtml-opacity: 0.85;
- opacity: 0.85;
- background-image: url(<%= asset_path "ajax-loader.gif" %>);
- background-position: center center;
- background-repeat: no-repeat;
- background-attachment: fixed;
-}
-</style>
-<script type="text/javascript">
-
-  function loadingView(flag) {
-    $('#loading-view').remove();
-    if(!flag) return;
-    $('<div id="loading-view" />').appendTo('body');
-  }
-
-  $(function(){
-    // 現在地の読み込み
-    // loadingView(true);
-    // $('#submit_button').prop("disabled", true);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        // success callback
-        function(position) {
-          $("#longitude").val(position.coords.longitude);
-          $("#latitude").val(position.coords.latitude);
-        },
-        // error callback
-        function(position) {
-          alert( "can't get position" );
-        }
-      )
+  <style type="text/css">
+    #loading-view {
+      /* 領域の位置やサイズに関する設定 */
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      position: fixed;
+      top: 0;
+      left: 0;
+      /* 背景関連の設定 */
+      background-color: #000000;
+      filter: alpha(opacity=85);
+      -moz-opacity: 0.85;
+      -khtml-opacity: 0.85;
+      opacity: 0.85;
+      background-image: url(<%= asset_path "ajax-loader.gif" %>);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
+  </style>
+  <script type="text/javascript">
 
-    // loadingView(false);
-    // $('#submit_button').prop("disabled", false);
-  });
-</script>
+    // function loadingView(flag) {
+    //   $('#loading-view').remove();
+    //   if(!flag) return;
+    //   $('<div id="loading-view" />').appendTo('body');
+    // }
+
+    $(function(){
+      // 現在地の読み込み
+      // loadingView(true);
+      // $('#submit_button').prop("disabled", true);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          // success callback
+          function(position) {
+            $("#longitude").val(position.coords.longitude);
+            $("#latitude").val(position.coords.latitude);
+          },
+          // error callback
+          function(position) {
+            alert( "can't get position" );
+          }
+
+        )
+      }
+
+      // loadingView(false);
+      // $('#submit_button').prop("disabled", false);
+    });
+  </script>
 
   <%= form_tag('/facility/search') do %>
-
-  <%= hidden_field_tag 'longitude', @search_param[:longitude] %>
-  <%= hidden_field_tag 'latitude', @search_param[:latitude] %>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">検索条件</div>
-    <ul class="list-group">
-      <li class="list-group-item">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            並び順
+    <%= hidden_field_tag 'longitude', @search_param[:longitude] %>
+    <%= hidden_field_tag 'latitude', @search_param[:latitude] %>
+    <div class="panel panel-default">
+      <div class="panel-heading">検索条件</div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              並び順
+            </div>
+            <ul class="list-group">
+              <li class="list-group-item">
+                <%= radio_button 'sort', 'conditions', '0', {:checked => @search_param[:sort_conditions_shiteinashi]} %>&nbsp;&nbsp;指定なし<br />
+                <%= radio_button 'sort', 'conditions', '1', {:checked => @search_param[:sort_conditions_genzaichi]} %>&nbsp;&nbsp;現在地から近い順<br />
+                <%= radio_button 'sort', 'conditions', '2', {:checked => @search_param[:sort_conditions_shiteijyusyo]} %>&nbsp;&nbsp;指定住所から近い順<br />
+                <%= text_field_tag :address, :address, class: "form-control", value: @search_param[:address], placeholder:"指定住所を入力" %>
+              </li>
+              <li class="list-group-item">
+                <%= select_tag "row_count", options_for_select({"表示件数：10件" => "10", "表示件数：20件" => "20", "表示件数：30件" => "30", "表示件数：40件" => "40", "表示件数：50件" => "50", "表示件数：100件" => "100", "表示件数：200件" => "200"}, @search_param[:row_count]), class: "form-control" %>
+              </li>
+             </ul>
           </div>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <%= radio_button 'sort', 'conditions', '0', {:checked => @search_param[:sort_conditions_shiteinashi]} %>&nbsp;&nbsp;指定なし<br />
-              <%= radio_button 'sort', 'conditions', '1', {:checked => @search_param[:sort_conditions_genzaichi]} %>&nbsp;&nbsp;現在地から近い順<br />
-              <%= radio_button 'sort', 'conditions', '2', {:checked => @search_param[:sort_conditions_shiteijyusyo]} %>&nbsp;&nbsp;指定住所から近い順<br />
-              <%= text_field_tag :address, :address, class: "form-control", value: @search_param[:address], placeholder:"指定住所を入力" %>
-
-            </li>
-
-            <li class="list-group-item">
-              <%= select_tag "row_count", options_for_select({"表示件数：10件" => "10", "表示件数：20件" => "20", "表示件数：30件" => "30", "表示件数：40件" => "40", "表示件数：50件" => "50", "表示件数：100件" => "100", "表示件数：200件" => "200"}, @search_param[:row_count]), class: "form-control" %>
-            </li>
-           </ul>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">カテゴリー</div>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @search_param[:category_selected]), class: "form-control", include_blank: true %>
-            </li>
-          </ul>
-        </div>
-
-      </li>
-      <li class="list-group-item">
-        <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button", id: "submit_button" %>
-      </li>
-    </ul>
-  </div>
-
-<!--
-  <div class="panel panel-default">
-    <div class="panel-heading">このサイトについて</div>
-    <ul class="list-group">
-      <li class="list-group-item">
-        <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
-        <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
-      </li>
-    </ul>
-  </div>
--->
+          <div class="panel panel-default">
+            <div class="panel-heading">カテゴリー</div>
+            <ul class="list-group">
+              <li class="list-group-item">
+                <%= select_tag "category", options_from_collection_for_select(Category.all, :db_name, :db_name, @search_param[:category_selected]), class: "form-control", include_blank: true %>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <%= submit_tag "上記の条件で再検索" , class: "form-control btn btn-info", name: "submit_button", id: "submit_button" %>
+        </li>
+      </ul>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">このサイトについて</div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <p>当サイトは大阪市の提供するオープンデータを利用した個人サイトです。</p>
+          <p>当サイトの御利用につき、何らかのトラブルや損失・損害等が発生した場合につきましては一切責任を問わないものとします。</p>
+        </li>
+      </ul>
+    </div>
   <% end %>
 </div>

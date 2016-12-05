@@ -2,13 +2,13 @@
   <div class="row">
     <%= render 'facility/side_bar' %>
     <div class="col-md-9 content-area">
-        <a href="#" id="modoru">一覧に戻る</a>
+        <a href="#" id="back">一覧に戻る</a>
         <div class="map_container">
           <div id="map" class="map_canvas"></div>
         </div>
         <script type="text/javascript">
 
-          $("#modoru").click(function() {
+          $("#back").click(function() {
             history.back();
             return false;
           });
@@ -124,4 +124,3 @@
       </div>
   </div>
 </div>
-
